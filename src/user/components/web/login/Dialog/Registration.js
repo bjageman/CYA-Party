@@ -9,7 +9,7 @@ class RegistrationDialog extends React.Component {
     constructor(props){
         super(props)
         this.state ={
-            "username": "",
+            "name": "",
             "password": ""
         }
     }
@@ -20,7 +20,7 @@ class RegistrationDialog extends React.Component {
     handleRegistration = value => {
 
         this.props.register({
-            "username": this.state.username,
+            "name": this.state.name,
             "password": this.state.password,
         })
         this.props.onRequestClose();
@@ -31,12 +31,11 @@ class RegistrationDialog extends React.Component {
             <Dialog open={this.props.open} onRequestClose={this.handleRequestClose}>
                 <TextInput
                    required
-                   id="username"
-                   name="username"
-                   label="Username"
-                   value={this.state.username}
+                   id="name"
+                   name="name"
+                   label="username"
+                   value={this.state.name}
                    onChange={event => this.setState({ [event.target.name]: event.target.value })}
-                   marginForm
                  />
                 <TextInput
                   required
@@ -46,7 +45,6 @@ class RegistrationDialog extends React.Component {
                   type="password"
                   value={this.state.password}
                   onChange={event => this.setState({ [event.target.name]: event.target.value })}
-                  marginForm
                 />
             <Button raised onClick={this.handleRegistration} color="primary">
                 Register
@@ -58,29 +56,5 @@ class RegistrationDialog extends React.Component {
         )
     }
 }
-
-export const styles = theme => ({
-  root: {
-    color: 'inherit',
-    textDecoration: 'inherit',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-  primary: {
-    paddingLeft: 40,
-    margingRight: 20,
-    color: "blue",
-  },
-  container: {
-    marginLeft: "5%",
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  input: {
-      marginRight: 10
-  }
-});
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistrationDialog);

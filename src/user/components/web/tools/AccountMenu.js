@@ -27,9 +27,6 @@ class AccountMenu extends React.Component {
                 <ReduxLink to="/profile">
                     <MenuItem onClick={this.handleRequestClose}>Profile</MenuItem>
                 </ReduxLink>
-                <ReduxLink to="/campaign">
-                    <MenuItem onClick={this.handleRequestClose}>My Campaigns</MenuItem>
-                </ReduxLink>
                 <hr />
                 <MenuItem onClick={this.handleLogOut}>Log Out</MenuItem>
             </Menu>

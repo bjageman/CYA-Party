@@ -4,7 +4,6 @@ import { createReducer } from 'redux-act'
 import * as actions from './actions'
 
 import { user } from 'user/redux/reducers'
-
 import { routerReducer as router } from 'react-router-redux'
 
 const initial = {

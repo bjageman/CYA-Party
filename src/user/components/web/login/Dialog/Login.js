@@ -6,35 +6,30 @@ import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 import {TextInput, Dialog, Button} from 'bjageman-react-toolkit'
 
 class LoginDialog extends React.Component {
-    constructor(props){
-        super(props)
-        this.state ={
-            "username": "",
-            "password": ""
-        }
+    state = {
+        "name": "",
+        "password": ""
     }
     handleRequestClose = () => {
-        this.props.onRequestClose();
-    };
-
+        this.props.onRequestClose()
+    }
     handleLogin = value => {
-
         this.props.login({
-            "username": this.state.username,
+            "name": this.state.name,
             "password": this.state.password,
         })
-        this.props.onRequestClose();
-    };
+        this.props.onRequestClose()
+    }
 
     render(){
         return(
             <Dialog open={this.props.open} onRequestClose={this.handleRequestClose}>
                 <TextInput
                    required
-                   id="username"
-                   name="username"
-                   label="Username"
-                   value={this.state.username}
+                   id="name"
+                   name="name"
+                   label="username"
+                   value={this.state.name}
                    onChange={event => this.setState({ [event.target.name]: event.target.value })}
                  />
                 <TextInput
@@ -56,6 +51,4 @@ class LoginDialog extends React.Component {
         )
     }
 }
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginDialog)

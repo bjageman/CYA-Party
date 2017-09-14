@@ -5,8 +5,9 @@ import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
 import Login from 'user/components/web/login/index'
 import AccountMenu from 'user/components/web/tools/AccountMenu'
+import ReduxLink from 'base/components/web/links/Redux'
 
-import { Drawer, AppBar, AppBarItem} from 'bjageman-react-toolkit'
+import { Drawer, AppBar, AppBarButton} from 'bjageman-react-toolkit'
 import myConfig from 'config.js'
 
 class ToolBar extends React.Component {
@@ -24,10 +25,10 @@ class ToolBar extends React.Component {
         return(
             <div>
             <AppBar>
-                <AppBarItem >
-                    { brandName }
-                </AppBarItem>
-                { user ? <AccountMenu  /> : <Login color="contrast"/> }
+                <ReduxLink to="/">
+                    <AppBarButton> { brandName } </AppBarButton>
+                </ReduxLink>
+                { user ? <AccountMenu  /> : <Login /> }
             </AppBar>
             <Drawer
                 open={this.state.open}

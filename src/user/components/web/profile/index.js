@@ -1,17 +1,23 @@
 import React from 'react'
-
-import Banner from './Banner'
+//Redux
+import { connect } from 'react-redux'
+import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
 class UserProfile extends React.Component {
     render() {
-        const params = this.props.match.params
-        const user = params.userId
-        return (
-        <div>
-            <Banner user={user} />
-        </div>
-        )
+        const user = this.props.user
+        if (user) {
+            return (
+            <div>
+                <h1>{user.name}</h1>
+            </div>
+            )
+        }else{
+            return (
+                <h1>Please Login</h1>
+            )
+        }
     }
 }
 
-export default UserProfile
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile)

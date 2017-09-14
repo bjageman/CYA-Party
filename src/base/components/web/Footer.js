@@ -1,13 +1,12 @@
 import React from 'react'
 
-import MdCopyright from 'react-icons/lib/md/copyright'
 import myConfig from 'config.js'
 
 class Footer extends React.Component {
     render(){
         return(
             <div style={styles.footer}>
-                <MdCopyright /> {myConfig.APPNAME} {myConfig.COPYRIGHTDATE}
+                {myConfig.APPNAME} {myConfig.COPYRIGHTDATE}
             </div>
         )
     }

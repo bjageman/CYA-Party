@@ -1,0 +1,58 @@
+{"stories": [
+  {
+    "name": "Curse of Esmeralda",
+    "description": "A bunch of people try to find a sweet gem.",
+    "author": "Brodin",
+    "ratings": [4, 5, 5, 5, 2],
+    "image": "http://reallybigcompany.com/papers/gemstones_idaho/gems/zircon_large_3.jpg",
+    "rooms": [
+      {
+        "id": 145682,
+        "name": "Room 1: The Introduction",
+        "description": "You are in a room. A door is to the left and the right.",
+        "actions": [{
+          "name": "Go Right",
+          "description": "You find a cat!",
+          "result": {
+            "give_item": {
+              "id": 5,
+              "type": "inventory",
+              "name": "cat",
+              "function": "meows a lot"
+            }
+          },
+          "next_room": 19992
+        },{
+          "name": "Go Left",
+          "description": "A big monster is here!",
+          "result": {
+            "kill_player": "random"
+          },
+          "next_room": null
+        }]
+      },
+        {
+        "id": 19992,
+        "name": "Room 2: Shit Happened",
+        "description": "Wow, that thing that happened before was crazy. What now?",
+        "actions": [{
+          "name": "Go Right",
+          "description": "You win!",
+          "result": {
+            "give_item": {
+              "id": 5,
+              "type": "inventory",
+              "name": "cat",
+              "function": "meows a lot"
+            }
+          }
+        },{
+          "name": "Go Left",
+          "description": "A big monster is here!",
+          "result": {
+            "kill_player": "random"
+          }
+        }]
+      }]
+    }]
+}

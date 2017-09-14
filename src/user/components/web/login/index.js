@@ -5,20 +5,14 @@ import RegistrationDialog from './Dialog/Registration'
 
 import { AppBarButton } from 'bjageman-react-toolkit'
 
-
 class Login extends React.Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            openLogin: false,
-            openRegistration: false
-        }
+    state = {
+        openLogin: false,
+        openRegistration: false
     }
-
     handleLoginRequestClose = value => {
         this.setState({ openLogin: false })
     }
-
     handleRegistrationRequestClose = value => {
         this.setState({ openRegistration: false })
     }

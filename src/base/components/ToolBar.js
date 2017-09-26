@@ -3,9 +3,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import Login from 'user/components/web/login/index'
-import AccountMenu from 'user/components/web/tools/AccountMenu'
-import ReduxLink from 'base/components/web/links/Redux'
+import Login from 'user/components/login/index'
+import AccountMenu from 'user/components/tools/AccountMenu'
+import ReduxLink from 'base/components/links/Redux'
 
 import { Drawer, AppBar, AppBarButton} from 'bjageman-react-toolkit'
 import myConfig from 'config.js'

@@ -10,12 +10,7 @@ import  store  from 'redux/store'
 
 class ReduxLink extends React.Component {
     render(){
-
         var to = this.props.to
-        if (this.props.campaignLink){
-            to = "/campaign/" + this.props.campaign.slug + "/" + to
-        }
-
         return(
         <a style={styles.link} onClick={ () => store.dispatch(push(to)) }>{this.props.children}</a>
         )
@@ -24,6 +19,7 @@ class ReduxLink extends React.Component {
 
 const styles = {
     link: {
+      textDecoration: "none",
       cursor: "pointer",
     },
 }

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
 import { Menu, MenuItem, Icon } from 'bjageman-react-toolkit'
-import ReduxLink from 'base/components/web/links/Redux'
+import ReduxLink from 'base/components//links/Redux'
 
 class AccountMenu extends React.Component {
     state = { open: false }

@@ -3,8 +3,6 @@ from passlib.apps import custom_app_context as pwd_context
 from v1.apps.models import *
 
 class User(Base, TimestampMixin):
-    __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key= True)
     password_hash = db.Column(db.String(128))
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(32))

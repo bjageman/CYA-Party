@@ -2,5 +2,5 @@ from flask import Blueprint
 
 stories = Blueprint('stories', __name__)
 
-from . import views
-from . import game
+from .views import edit
+from .views import play

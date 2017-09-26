@@ -1,6 +1,6 @@
 import * as actions from 'redux/actions'
 import { put, call } from 'redux-saga/effects'
-import { postAuthData, getDataApi, postDataApi, verifyData } from 'redux/api'
+import { postAuthData, getDataApi, postDataApi } from 'redux/api'
 import { push } from 'react-router-redux'
 
 export function* getAuthToken(action) {
@@ -11,7 +11,7 @@ export function* getAuthToken(action) {
       if (response.status === 200) {
           yield put(actions.loginSuccess({ "access_token": response.data.access_token }))
           yield put(actions.getUser({"access_token": response.data.access_token }))
-          yield put(push('/profile'))
+          yield put(push('/story'))
         }else{
           yield put(actions.error({ "message": response.data.description || response.data.error }))
         }

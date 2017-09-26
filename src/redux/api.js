@@ -1,6 +1,5 @@
 import axios from 'axios'
 import myConfig from 'config.js'
-import { put } from 'redux-saga/effects'
 
 var baseURL = myConfig.API_URL + "/api/v" + myConfig.API_VERSION
 

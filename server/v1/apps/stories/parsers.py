@@ -18,6 +18,7 @@ def parse_story(story, detailed=True):
             for page in story.pages:
                 pages.append(page.id)
         result.update({
+            "description": story.description,
             "pages": pages,
             "owner": parse_user(story.owner),
             "items" : parse_items(story.items),
@@ -133,6 +134,26 @@ def parse_player(player):
         result.update({
             "user": parse_user(player.user),
             "inventory": parse_items(player.inventory),
+        })
+        return result
+    except AttributeError as e:
+        print(e)
+        return None
+
+def vote_count(votes):
+    vote_set = {}
+    for vote in votes:
+        if vote.choice.id in vote_set:
+            vote_set[vote.choice.id] = vote_set[vote.choice.id] + 1
+        else:
+            vote_set[vote.choice.id] = 1
+    return(vote_set)
+
+def parse_vote(vote):
+    try:
+        result = {}
+        result.update({
+            "choice_id": vote.choice.id,
         })
         return result
     except AttributeError as e:

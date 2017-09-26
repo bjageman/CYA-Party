@@ -1,6 +1,10 @@
 from v1.apps import db
 from v1.apps.models import *
 
+##
+#  Static Model Data
+##
+
 class Story(Base, TimestampMixin):
     owner_id = db.Column(db.ForeignKey('user.id'), index=True)
     owner = db.relationship('User', backref='stories')
@@ -29,12 +33,22 @@ class Choice(Base, TimestampMixin):
 class Action(Base, TimestampMixin):
     description = db.Column(db.Text)
     target = db.Column(db.String(32))
+    # Target is a page
     page = db.relationship('Page', backref='actions')
     page_id = db.Column(db.ForeignKey('page.id'))
+    # Target is an item
     item = db.relationship('Item', backref='actions')
     item_id = db.Column(db.ForeignKey('item.id'))
     type = db.relationship('ActionType', backref='actions')
     type_id = db.Column(db.ForeignKey('action_type.id'), index=True)
+
+class Item(Base, TimestampMixin):
+    story = db.relationship('Story', backref='items')
+    story_id = db.Column(db.ForeignKey('story.id'))
+
+##
+#  Game Session Data (not static)
+##
 
 class Session(Base, TimestampMixin):
     story = db.relationship('Story', backref='sessions')
@@ -54,9 +68,15 @@ class Player(Base, TimestampMixin):
     session_id = db.Column(db.ForeignKey('session.id'))
     inventory = db.relationship("Item", secondary=player_item_table)
 
-class Item(Base, TimestampMixin):
-    story = db.relationship('Story', backref='items')
-    story_id = db.Column(db.ForeignKey('story.id'))
+class Vote(Base, TimestampMixin):
+    session = db.relationship('Session', backref='votes')
+    session_id = db.Column(db.ForeignKey('session.id'))
+    page = db.relationship('Page', backref='votes')
+    page_id = db.Column(db.ForeignKey('page.id'))
+    player = db.relationship('Player', backref='votes')
+    player_id = db.Column(db.ForeignKey('player.id'))
+    choice = db.relationship('Choice', backref='votes')
+    choice_id = db.Column(db.ForeignKey('choice.id'))
 
 
 # Story -> Page -> Choice -> Action -> Resolution -> Next Page

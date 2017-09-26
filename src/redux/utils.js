@@ -7,6 +7,7 @@ export function mapStateToProps(state) {
     user: state.user,
     response: state.response,
     router: state.router,
+    story: state.story,
   }
   return props
 }

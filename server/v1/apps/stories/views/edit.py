@@ -1,8 +1,8 @@
 from flask import request, jsonify, abort
 from flask_jwt import jwt_required, current_identity
 #App Specific
-from . import stories
-from .models import Story, Page, Choice, Action
+from .. import stories
+from ..models import Story, Page, Choice, Action
 from v1.apps.stories.parsers import *
 from v1.apps.stories.errors import *
 from v1.apps.stories.utils import *
@@ -19,20 +19,25 @@ from v1.apps.utils import get_required_data, get_optional_data
 @stories.route('', methods=['GET'])
 @jwt_required()
 def get_stories():
-    stories = Story.query.all()
+    stories = Story.query.filter_by(owner=current_identity)
     return jsonify(parse_stories(stories))
 
 @stories.route('/<story_id>', methods=['GET'])
+@jwt_required()
 def get_story_request(story_id):
     story = get_story(story_id)
-    return jsonify(parse_story(story))
+    if story.owner == current_identity:
+        return jsonify(parse_story(story))
+    else:
+        abort(401)
 
 @stories.route('', methods=['POST', 'PUT'])
 @jwt_required()
 def create_story():
     data = request.get_json()
     name = get_required_data(data, "name")
-    story = Story(name=name)
+    description = get_optional_data(data, "description")
+    story = Story(name=name, owner=current_identity, description=description)
     db.session.add(story)
     db.session.commit()
     return jsonify(parse_story(story))
@@ -43,8 +48,11 @@ def update_story(story_id):
     story = get_story(story_id)
     data = request.get_json()
     name = get_optional_data(data, "name")
+    description = get_optional_data(data, "description")
     if name is not None:
         story.set_name(name)
+    if description is not None:
+        story.description = description
     db.session.add(story)
     db.session.commit()
     return jsonify(parse_story(story))

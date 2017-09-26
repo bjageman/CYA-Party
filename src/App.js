@@ -4,12 +4,15 @@ import { Route, Switch } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { history } from 'redux/store'
 
-import ToolBar from 'base/components/web/ToolBar'
-import Footer from 'base/components/web/Footer'
-import Notifications from 'base/components/web/notifications/'
+import ToolBar from 'base/components/ToolBar'
+import Footer from 'base/components/Footer'
+import Notifications from 'base/components/notifications/'
+import NotFound from 'base/components/Error'
 
 import Home from './Home'
-import Profile from 'user/components/web/profile/'
+import Profile from 'user/components/profile/'
+
+import StoryRouter from 'story/components/router'
 
 class App extends React.Component {
   render() {
@@ -22,6 +25,8 @@ class App extends React.Component {
             <Switch>
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/profile" component={Profile}/>
+                <Route path="/story" component={StoryRouter}/>
+                <Route component={NotFound} />
             </Switch>
             </div>
             <Footer />

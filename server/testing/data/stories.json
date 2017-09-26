@@ -1,7 +1,7 @@
 [{
 	"name": "Curse of Esmeralda",
 	"description": "A bunch of people try to find a sweet gem.",
-	"owner_id": 1,
+	"owner": { "name": "brodin" },
 	"ratings": [4, 5, 5, 5, 2],
 	"image": {
         "url": "http://reallybigcompany.com/papers/gemstones_idaho/gems/zircon_large_3.jpg"
@@ -34,7 +34,7 @@
 				"actions": [{
 						"name": "A MONSTER EATS ONE OF YOU",
 						"type": "KILL_PLAYER",
-						"target": -1
+						"target": "RANDOM"
 					},
 					{
 						"name": "You enter the second room",
@@ -42,16 +42,6 @@
 						"target": 2
 					}
 				]
-			},
-			{
-				"id": 3,
-				"name": "Use the key",
-				"required_item": 1,
-				"actions": [{
-					"name": "You enter the secret trapdoor",
-					"type": "GOTO_PAGE",
-					"target": 3
-				}]
 			}]
 	    },
         {
@@ -78,9 +68,9 @@
 				"name": "Go Down",
 				"required_item": null,
 				"actions": [{
-						"name": "A MONSTER EATS ONE OF YOU",
+						"name": "One of you must be sacrificed to the demon lord",
 						"type": "KILL_PLAYER",
-						"target": -1
+						"target": "CHOOSE"
 					},
 					{
 						"name": "You enter the next room",
@@ -88,6 +78,16 @@
 						"target": 3
 					}
 				]
+			},
+			{
+				"id": 3,
+				"name": "Use the wrench",
+				"required_item": 1,
+				"actions": [{
+					"name": "You enter the secret trapdoor",
+					"type": "GOTO_PAGE",
+					"target": 3
+				}]
 			}]
 	    },
         {

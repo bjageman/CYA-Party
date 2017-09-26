@@ -22,7 +22,7 @@ def setKeyLink(key, data_type, original_id, new_id):
 def importStoriesData(data, db=db):
     for story in data:
         story_key = { "pages": {}, "items": {}} #Ensures that links to items and pages are dynamically set
-        owner = User.query.get(story['owner_id'])
+        owner = User.query.filter_by(name=story['owner']['name']).first()
         image = Image(url = story['image']['url'])
         story_model = Story(
                         name=story['name'],
@@ -55,20 +55,22 @@ def importStoriesData(data, db=db):
                 for action in choice['actions']:
                     action_type = ActionType.query.filter_by(name=action['type']).first()
                     if action_type is not None:
-                        target=action['target']
-                        if target is not None and target > 0:
-                            if 'GOTO_PAGE' in action_type.name:
-                                target = story_key['pages'][action['target']]
-                            if 'GIVE_ITEM' in action_type.name or 'TAKE_ITEM' in action_type.name:
-                                target = story_key['items'][action['target']]
-                        action_model = Action(name=action['name'], type=action_type, target=target)
+                        target = None
+                        target_item = None
+                        target_page = None
+                        if 'GOTO_PAGE' in action_type.name:
+                            target_page = Page.query.get(story_key['pages'][action['target']])
+                        elif 'GIVE_ITEM' in action_type.name or 'TAKE_ITEM' in action_type.name:
+                            target_item = Item.query.get(story_key['items'][action['target']])
+                        else:
+                            target = action['target']
+                        action_model = Action(name=action['name'], type=action_type, target=target, item=target_item, page=target_page)
                         choice_model.actions.append(action_model)
-                print("page:", choice_model.page.id, "choice", choice_model.id, choice_model.name, len(choice_model.actions))
                 db.session.add(choice_model)
             db.session.add(page_model)
         db.session.add(story_model)
     db.session.commit()
-    print("Successfully imported stories")
+    print("Imported", len(data), "stories")
 
 def exportData(object, db=db):
     return parse_stories(db.session.query(object).all(), detailed=True)
@@ -80,7 +82,7 @@ def importUserData(data, db=db):
         user_model.hash_password(user['password'])
         db.session.add(user_model)
     db.session.commit()
-    print("Successfully imported users")
+    print("Imported", len(data), "users")
 
 def importActionTypes(data, db=db):
     for actiontype in data:
@@ -88,6 +90,7 @@ def importActionTypes(data, db=db):
             actiontype_model = ActionType(name=actiontype['name'])
             db.session.add(actiontype_model)
     db.session.commit()
+    print("Imported", len(data), "action types")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-t", "--type", help="The type of data to be imported or exported [users, stories, pages]")

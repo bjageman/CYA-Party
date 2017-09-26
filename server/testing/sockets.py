@@ -26,15 +26,23 @@ class SocketTests(TestingBase):
         latest_response = response[-1]['args'][0]
         assert name in latest_response['user']['name']
 
-    def test_story(self):
-        self.importTestData('data/stories.json')
+    def test_create_session(self):
+        self.importTestData()
+        story_id = 1
+        user_id = 1
         socket_client = SocketIOTestClient(app, socketio, namespace="/stories")
         socket_client.connect()
         assert 'Connected' in socket_client.get_received('/stories')[0]['args'][0]['data']
         self.app.get('/socket')
         socket_client.emit('create_session', {
-            "story_id": "1"
+            "story_id": story_id,
+            "user_id": user_id,
         }, namespace="/stories")
         response = socket_client.get_received('/stories')
-        print(response)
+        session_data = response[-1]['args']['session']
+        story_data = session_data['story']
+        players_data = session_data['players']
+        # print(session_data, "\n\n", story_data, "\n\n", players_data)
+        assert story_data['id'] == story_id
+        assert players_data[0]['id'] == user_id
         socket_client.disconnect()

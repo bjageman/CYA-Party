@@ -24,12 +24,15 @@ class Choice(Base, TimestampMixin):
     page_id = db.Column(db.ForeignKey('page.id'), index=True)
     content = db.Column(db.Text)
     actions = db.relationship("Action", secondary=action_choice_table)
-    required_item = db.Column(db.Boolean, default=False)
+    required_item = db.Column(db.Integer)
 
 class Action(Base, TimestampMixin):
     description = db.Column(db.Text)
-    target = db.Column(db.Integer)
-    source = db.Column(db.Integer)
+    target = db.Column(db.String(32))
+    page = db.relationship('Page', backref='actions')
+    page_id = db.Column(db.ForeignKey('page.id'))
+    item = db.relationship('Item', backref='actions')
+    item_id = db.Column(db.ForeignKey('item.id'))
     type = db.relationship('ActionType', backref='actions')
     type_id = db.Column(db.ForeignKey('action_type.id'), index=True)
 
@@ -45,6 +48,8 @@ player_item_table = db.Table('player_item', Base.metadata,
 )
 
 class Player(Base, TimestampMixin):
+    user = db.relationship('User', backref='players')
+    user_id = db.Column(db.ForeignKey('user.id'))
     session = db.relationship('Session', backref='players')
     session_id = db.Column(db.ForeignKey('session.id'))
     inventory = db.relationship("Item", secondary=player_item_table)

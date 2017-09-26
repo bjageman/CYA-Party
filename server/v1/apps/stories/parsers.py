@@ -1,5 +1,7 @@
 from v1.apps.parsers import parse_base, parse_image
+from v1.apps.users.parsers import parse_user
 from v1.apps.admin.parsers import parse_action_type, parse_action_types
+
 def parse_stories(stories, detailed=False):
     story_set = []
     for story in stories:
@@ -17,6 +19,7 @@ def parse_story(story, detailed=True):
                 pages.append(page.id)
         result.update({
             "pages": pages,
+            "owner": parse_user(story.owner),
             "items" : parse_items(story.items),
             })
         return result
@@ -51,6 +54,7 @@ def parse_choice(choice):
     try:
         result = parse_base(choice)
         result.update({
+            "required_item": choice.required_item,
             "actions": parse_actions(choice.actions)
         })
         return result
@@ -66,12 +70,20 @@ def parse_actions(actions):
 def parse_action(action):
     try:
         result = parse_base(action)
+        target = "herpderp"
+        if action.page is not None:
+            target = parse_page(action.page, detailed=False)
+        elif action.item is not None:
+            target = parse_item(action.item)
+        else:
+            target = action.target
         result.update({
             "type": parse_action_type(action.type),
-            "target": action.target,
+            "target": target,
         })
         return result
-    except AttributeError:
+    except AttributeError as e:
+        print(e)
         return None
 
 def parse_items(items):
@@ -87,5 +99,42 @@ def parse_item(item):
             "name": item.name,
         })
         return result
-    except AttributeError:
+    except AttributeError as e:
+        print(e)
+        return None
+
+def parse_sessions(sessions):
+    session_set = []
+    for session in sessions:
+        session_set.append(parse_session(session))
+    return(session_set)
+
+def parse_session(session):
+    try:
+        result = parse_base(session)
+        result.update({
+            "story": parse_story(session.story, False),
+            "players": parse_players(session.players),
+        })
+        return result
+    except AttributeError as e:
+        print(e)
+        return None
+
+def parse_players(players):
+    player_set = []
+    for player in players:
+        player_set.append(parse_player(player))
+    return(player_set)
+
+def parse_player(player):
+    try:
+        result = parse_base(player)
+        result.update({
+            "user": parse_user(player.user),
+            "inventory": parse_items(player.inventory),
+        })
+        return result
+    except AttributeError as e:
+        print(e)
         return None

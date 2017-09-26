@@ -6,16 +6,15 @@ from v1.apps.users.models import User
 def decode_auth_token(auth_token):
     try:
         payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'))
-        return payload['identity'], None
+        return payload['identity']
     except jwt.ExpiredSignatureError:
         error_message = 'Signature expired. Please log in again.'
     except jwt.InvalidTokenError:
         error_message = 'Invalid token. Please log in again.'
     except:
         error_message = 'Unknown JWT Authorization Error'
-    print("Auth error", error_message)
-    make_response(jsonify({'error': error_message}), 401)
-    return None, error_message
+    abort(401, {"message": error_message})
+    return None
 
 def verify_auth(request):
     auth_header = request.headers.get('Authorization')
@@ -24,10 +23,10 @@ def verify_auth(request):
     else:
         auth_token = ''
     if auth_token:
-        user_id, err = decode_auth_token(auth_token)
+        user_id = decode_auth_token(auth_token)
         user = User.query.get(user_id)
         if user is None:
-            abort(401)
+            abort(401, {"message": "Invalid username/password combination"})
         return user
     return None
 

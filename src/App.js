@@ -6,6 +6,7 @@ import { history } from 'redux/store'
 
 import ToolBar from 'base/components/web/ToolBar'
 import Footer from 'base/components/web/Footer'
+import Notifications from 'base/components/web/notifications/'
 
 import Home from './Home'
 import Profile from 'user/components/web/profile/'
@@ -16,6 +17,7 @@ class App extends React.Component {
     <ConnectedRouter history={history}>
         <div style={styles.page}>
             <ToolBar />
+            <Notifications />
             <div style={styles.body} >
             <Switch>
                 <Route exact path="/" component={Home}/>

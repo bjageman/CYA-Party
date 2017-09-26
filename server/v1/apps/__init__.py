@@ -21,14 +21,18 @@ db.init_app(app)
 async_mode = None
 socketio = SocketIO(app, async_mode=async_mode)
 
+from .admin import admin
 from .users import users
+from .stories import stories
+
 from v1.apps.users.utils import authenticate, identity
 
 jwt = JWT(app, authenticate, identity)
 
-#JWT System
-
-app.register_blueprint(users, url_prefix='/api/v1/users')
+base_url = "/api/v1/"
+app.register_blueprint(admin, url_prefix= base_url + 'admin')
+app.register_blueprint(users, url_prefix= base_url + 'users')
+app.register_blueprint(stories, url_prefix= base_url + 'stories')
 
 @app.after_request
 def add_headers(response):

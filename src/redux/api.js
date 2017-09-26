@@ -1,5 +1,6 @@
 import axios from 'axios'
 import myConfig from 'config.js'
+import { put } from 'redux-saga/effects'
 
 var baseURL = myConfig.API_URL + "/api/v" + myConfig.API_VERSION
 
@@ -10,14 +11,6 @@ var axiosRequest = axios.create({
       'Content-Type': 'application/json',
   }
 })
-
-export function verifyData(response){
-  if (response.status === 200){
-      return true
-  }else{
-      return false
-  }
-}
 
 export function postAuthData(loginData) {
     return axios.post(myConfig.API_URL + "/auth", loginData, {'Content-Type': 'application/json'})

@@ -1,4 +1,3 @@
-from flask_socketio import SocketIO, emit, disconnect
 from flask import Flask, request, jsonify, abort
 
 import string
@@ -6,13 +5,13 @@ import string
 from . import users
 
 from .models import User
-from ..database import *
+from .utils import authenticate
 
-from v1.apps import socketio, db
+from v1.apps import db
 from .parsers import parse_user
 
 #Error handling
-from v1.apps.errors import *
+from v1.apps.errors import unauthorized
 from .errors import *
 
 from v1.apps.auth import verify_auth
@@ -21,21 +20,6 @@ def get_users_player(user, game):
     for player in game.players:
         if player.user.id == user.id:
             return player
-
-@socketio.on('login')
-def login(data):
-    try:
-        name = data['name']
-        password = data['password']
-    except (AttributeError, KeyError):
-        emit_error("Bad Request")
-    user = authenticate(name, password)
-    if user is not None:
-        emit('user_login_success',{
-            "user": parse_user(user),
-        })
-    else:
-        emit_error("Incorrect name/Password")
 
 @users.route('/login', methods=['POST'])
 def login_user():
@@ -47,7 +31,7 @@ def login_user():
         abort(400)
     user = authenticate(name, password)
     if user is None:
-        abort(404)
+        abort(401)
     return jsonify(parse_user(user))
 
 

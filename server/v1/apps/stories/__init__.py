@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-users = Blueprint('users', __name__)
+stories = Blueprint('stories', __name__)
 
 from . import views
 from . import websockets

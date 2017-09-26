@@ -2,12 +2,12 @@ import os
 import unittest
 import json
 
-from v1.apps import app, db, socketio
+from v1.apps import app, db
 from v1.apps.users.models import User
 
 from v1.apps.config import DATABASE_TEST
 
-from flask_socketio import SocketIO, SocketIOTestClient
+from importExport import importStoriesData
 
 class TestingBase(unittest.TestCase):
     def initDB(self):
@@ -26,14 +26,16 @@ class TestingBase(unittest.TestCase):
         self.app = app.test_client()
         self.db = db
         self.db.create_all()
-        self.socketio = SocketIOTestClient(app, socketio)
         self.initDB()
 
-
     def tearDown(self):
-        self.socketio.disconnect()
         self.db.session.expunge_all()
         self.db.session.flush()
         self.db.session.remove()
         self.db.session.close()
         self.db.drop_all()
+
+    def importTestData(self, data, type="stories", directory=os.path.dirname(__file__)):
+        data = json.load(open(os.path.join(directory, data), 'r'))
+        if type == "stories":
+            importStoriesData(data)

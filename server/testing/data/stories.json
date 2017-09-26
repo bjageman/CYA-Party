@@ -1,0 +1,111 @@
+[{
+	"name": "Curse of Esmeralda",
+	"description": "A bunch of people try to find a sweet gem.",
+	"owner_id": 1,
+	"ratings": [4, 5, 5, 5, 2],
+	"image": {
+        "url": "http://reallybigcompany.com/papers/gemstones_idaho/gems/zircon_large_3.jpg"
+    },
+	"pages": [{
+		"id": 1,
+        "start": true,
+		"name": "Room 1: The Introduction",
+		"description": "You are in a room. A door is to the left and the right.",
+		"choices": [{
+				"id": 1,
+				"name": "Go Right",
+				"required_item": null,
+				"actions": [{
+						"name": "You find a sweet wrench",
+						"type": "GIVE_ITEM",
+						"target": 1
+					},
+					{
+						"name": "You enter the second room",
+						"type": "GOTO_PAGE",
+						"target": 2
+					}
+				]
+			},
+			{
+				"id": 2,
+				"name": "Go Left",
+				"required_item": null,
+				"actions": [{
+						"name": "A MONSTER EATS ONE OF YOU",
+						"type": "KILL_PLAYER",
+						"target": -1
+					},
+					{
+						"name": "You enter the second room",
+						"type": "GOTO_PAGE",
+						"target": 2
+					}
+				]
+			},
+			{
+				"id": 3,
+				"name": "Use the key",
+				"required_item": 1,
+				"actions": [{
+					"name": "You enter the secret trapdoor",
+					"type": "GOTO_PAGE",
+					"target": 3
+				}]
+			}]
+	    },
+        {
+		"id": 2,
+        "start": false,
+		"name": "Room 2: The Next Day",
+		"description": "This is a second room. Woot!",
+		"choices": [{
+				"name": "Go Up",
+				"required_item": null,
+				"actions": [{
+						"name": "You find a sweet item",
+						"type": "GIVE_ITEM",
+						"target": 2
+					},
+					{
+						"name": "You enter the next room",
+						"type": "GOTO_PAGE",
+						"target": 3
+					}
+				]
+			},
+			{
+				"name": "Go Down",
+				"required_item": null,
+				"actions": [{
+						"name": "A MONSTER EATS ONE OF YOU",
+						"type": "KILL_PLAYER",
+						"target": -1
+					},
+					{
+						"name": "You enter the next room",
+						"type": "GOTO_PAGE",
+						"target": 3
+					}
+				]
+			}]
+	    },
+        {
+        "id": 3,
+        "start": false,
+        "name": "Room 3: The Final Rooms",
+        "description": "This is the final room! You survived!",
+        "choices": []
+        }],
+    "items": [
+        {
+        "id": 1,
+        "name":"Wrench"
+        },
+        {
+        "id": 2,
+        "name":"Candy"
+        }
+    ]
+
+}]

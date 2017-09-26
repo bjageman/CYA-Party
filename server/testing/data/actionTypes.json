@@ -1,0 +1,14 @@
+[
+    {
+        "name": "GIVE_ITEM"
+    },
+    {
+        "name": "TAKE_ITEM"
+    },
+    {
+        "name": "KILL_PLAYER"
+    },
+    {
+        "name": "GOTO_PAGE"
+    }
+]

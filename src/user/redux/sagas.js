@@ -8,12 +8,12 @@ export function* getAuthToken(action) {
       let payload = action.payload
       let data = {"username": payload.name, "password": payload.password }
       const response = yield call(postAuthData, data)
-      if (verifyData(response)) {
+      if (response.status === 200) {
           yield put(actions.loginSuccess({ "access_token": response.data.access_token }))
           yield put(actions.getUser({"access_token": response.data.access_token }))
           yield put(push('/profile'))
         }else{
-          yield put(actions.error({ "message": response.data.error }))
+          yield put(actions.error({ "message": response.data.description || response.data.error }))
         }
       }catch(error){
         yield put(actions.error({ "message": error.message }))
@@ -26,11 +26,11 @@ export function* registerUser(action) {
       let data = {"name": payload.name, "password": payload.password }
       let url = 'users'
       const response = yield call(postDataApi, url, data)
-      if (verifyData(response)) {
+      if (response.status === 200) {
           yield put(actions.success({"message" : payload.name + " was registered!"}))
           yield put(actions.login(data))
         }else{
-          yield put(actions.error({ "message": response.data.error }))
+          yield put(actions.error({ "message": response.data.description || response.data.error }))
         }
       }catch(error){
         yield put(actions.error({ "message": error.message }))
@@ -42,12 +42,12 @@ export function* getUser(action) {
       let payload = action.payload
       let url = 'users'
       const response = yield call(getDataApi, url, payload.access_token)
-      if (verifyData(response)) {
+      if (response.status === 200) {
           yield put(actions.loginSuccess({
               "id": response.data.id,
               "name": response.data.name }))
         }else{
-          yield put(actions.error({ "message": response.data.error }))
+          yield put(actions.error({ "message": response.data.description || response.data.error }))
         }
       }catch(error){
         yield put(actions.error({ "message": error.message }))

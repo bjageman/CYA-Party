@@ -8,7 +8,7 @@ import { persistStore, autoRehydrate } from 'redux-persist'
 import { routerMiddleware } from 'react-router-redux'
 //Custom Data
 import reducers from './reducers'
-import saga from './sagas'
+import sagas from './sagas'
 
 export const history = createHistory()
 
@@ -26,7 +26,7 @@ function configureStore(initialState){
         autoRehydrate()
     ),
   )
-  sagaMiddleware.run(saga)
+  sagaMiddleware.run(sagas)
   return store
 }
 

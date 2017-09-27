@@ -5,6 +5,7 @@ import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
 import { Button, Grid, Card, CardContent, Text } from 'bjageman-react-toolkit'
 import ReduxLink from 'base/components/links/Redux'
+import Delete from 'base/components/editor/delete'
 
 class StoryListItem extends React.Component {
     render() {
@@ -15,6 +16,7 @@ class StoryListItem extends React.Component {
                     <Text h1> {story.name} </Text>
                     <Text p> {story.description} </Text>
                     <ReduxLink to={"/story/edit/" + story.id }><Button raised>Edit</Button></ReduxLink>
+                    <Delete story_id={story.id} type="story" >Delete</Delete>
                 </CardContent>
             </Card>
         )
@@ -22,16 +24,15 @@ class StoryListItem extends React.Component {
 }
 
 class StoryList extends React.Component {
-
-    componentWillMount(){
-        console.log("GET STORIES")
-        this.props.getStories({
+    constructor(props){
+        super(props)
+        this.props.getItems({
             access_token: this.props.user.access_token,
         })
     }
 
     render() {
-        const story_listing = this.props.story ? this.props.story.listing : null
+        const story_listing = this.props.adventure ? this.props.adventure.listing : null
         if (story_listing) {
             return(
                 <div>

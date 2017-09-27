@@ -38,6 +38,7 @@ def parse_page(page, detailed=True):
         result = parse_base(page)
         if (detailed):
             result.update({
+                "description": page.description,
                 "start": page.start,
                 "choices": parse_choices(page.choices)
                 })

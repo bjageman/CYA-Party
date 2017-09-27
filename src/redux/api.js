@@ -22,10 +22,14 @@ export function postAuthData(loginData) {
     })
 }
 
-export function postDataApi(url, postData, token = null) {
+function setToken(token){
     if (token){
         axiosRequest.defaults.headers.common['Authorization'] = 'JWT ' + token
     }
+}
+
+export function postDataApi(url, postData, token = null) {
+    setToken(token)
     return axiosRequest.post(url, postData)
     .then(function (response) {
         return response
@@ -37,9 +41,7 @@ export function postDataApi(url, postData, token = null) {
 }
 
 export function getDataApi(url, token = null) {
-    if (token){
-        axiosRequest.defaults.headers.common['Authorization'] = 'JWT ' + token
-    }
+    setToken(token)
     return axiosRequest.get(url)
     .then(function (response) {
         return response
@@ -51,9 +53,7 @@ export function getDataApi(url, token = null) {
 }
 
 export function deleteDataApi(url, token = null) {
-    if (token){
-        axiosRequest.defaults.headers.common['Authorization'] = 'JWT ' + token
-    }
+    setToken(token)
     return axiosRequest.delete(url)
     .then(function (response) {
         return response

@@ -12,7 +12,7 @@ import NotFound from 'base/components/Error'
 import Home from './Home'
 import Profile from 'user/components/profile/'
 
-import StoryRouter from 'story/components/router'
+import StoryRouter from 'adventure/components/router'
 
 class App extends React.Component {
   render() {

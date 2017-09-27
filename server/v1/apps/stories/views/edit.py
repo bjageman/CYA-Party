@@ -20,14 +20,14 @@ from v1.apps.utils import get_required_data, get_optional_data
 @jwt_required()
 def get_stories():
     stories = Story.query.filter_by(owner=current_identity)
-    return jsonify(parse_stories(stories))
+    return jsonify({"listing": parse_stories(stories)})
 
 @stories.route('/<story_id>', methods=['GET'])
 @jwt_required()
 def get_story_request(story_id):
     story = get_story(story_id)
     if story.owner == current_identity:
-        return jsonify(parse_story(story))
+        return jsonify({"story": parse_story(story) })
     else:
         abort(401)
 
@@ -40,7 +40,7 @@ def create_story():
     story = Story(name=name, owner=current_identity, description=description)
     db.session.add(story)
     db.session.commit()
-    return jsonify(parse_story(story))
+    return jsonify({"story": parse_story(story) })
 
 @stories.route('/<story_id>', methods=['POST', 'PUT'])
 @jwt_required()
@@ -55,15 +55,20 @@ def update_story(story_id):
         story.description = description
     db.session.add(story)
     db.session.commit()
-    return jsonify(parse_story(story))
+    return jsonify({"story": parse_story(story)})
 
 @stories.route('/<story_id>', methods=['DELETE'])
 @jwt_required()
 def delete_story(story_id):
+    print(story_id)
     story = get_story(story_id)
     slug = story.slug
     db.session.delete(story)
-    return jsonify({"deleted": slug})
+    return jsonify({
+        "deleted": True,
+        "slug": slug,
+        "object": "story",
+        })
 
 ##
 #  Items
@@ -148,8 +153,11 @@ def update_page(story_id, page_id):
     page = get_page(page_id, story_id)
     data = request.get_json()
     name = get_optional_data(data, "name")
+    description = get_optional_data(data, "description")
     if name is not None:
         page.set_name(name)
+    if name is not None:
+        page.description = description   
     db.session.add(page)
     db.session.commit()
     return jsonify(parse_page(page))

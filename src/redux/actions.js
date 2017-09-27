@@ -1,6 +1,6 @@
 import { createAction } from 'redux-act';
 export * from 'user/redux/actions';
-export * from 'story/redux/actions';
+export * from 'adventure/redux/actions';
 
 export const loading = createAction('A process is currently running')
 export const success = createAction('received a success message from the server')

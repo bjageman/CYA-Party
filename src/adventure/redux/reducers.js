@@ -8,7 +8,7 @@ const initial = {
       story: {
           name: "", description: "",
           pages:[{
-              choice: {},
+              choice: {  name: "", description: "", },
               choices: []
           }]
       },
@@ -75,14 +75,27 @@ export const editor = createReducer({
             }
         }
     },
-    // [actions.updateChoice]: (state, payload) => {
-    //     return { 
-    //         story: {
-    //             ...state.story,
-    //             pages: updateObjectInArray( state.story.pages, payload.page, payload.index )
-    //         },
-    //         page: state.page }
-    // },
+    [actions.updateChoice]: (state, payload) => {
+        var current_page = state.story.pages[payload.page_index]
+        return {
+            ...state,
+            story: {
+                ...state.story,
+                pages: updateObjectInArray(
+                    state.story.pages,
+                    {
+                        ...current_page,
+                        choices: updateObjectInArray(
+                            current_page.choices,
+                            payload.choice,
+                            payload.index
+                        ),
+
+                    },
+                    payload.index )
+            }
+        }
+    },
     [actions.addChoice]: (state, payload) => {
         var current_page = state.story.pages[payload.index]
         console.log(payload.index, current_page)
@@ -92,7 +105,11 @@ export const editor = createReducer({
                 ...state.story,
                 pages: updateObjectInArray(
                     state.story.pages,
-                    { ...current_page, choices: [ ...current_page.choices, payload.choice ] },
+                    {
+                        ...current_page,
+                        choice: initial.editor.story.pages[0].choice ,
+                        choices: [ ...current_page.choices, payload.choice ]
+                    },
                     payload.index )
             }
         }

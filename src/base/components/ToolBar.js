@@ -28,7 +28,7 @@ class ToolBar extends React.Component {
                 <ReduxLink to="/">
                     <AppBarButton> { brandName } </AppBarButton>
                 </ReduxLink>
-                { user ? <AccountMenu  /> : <Login /> }
+                { user.id ? <AccountMenu  /> : <Login /> }
             </AppBar>
             <Drawer
                 open={this.state.open}

@@ -2,12 +2,12 @@ import { createReducer } from 'redux-act'
 import * as actions from './actions'
 
 const initial = {
-  user: null
+  user: {},
 }
 
 export const user = createReducer({
   [actions.logout]: (state) => {
-    return null
+    return {}
   },
   [actions.loginSuccess]: (state, payload) => {
     return {

@@ -7,7 +7,7 @@ export function mapStateToProps(state) {
     user: state.user,
     response: state.response,
     router: state.router,
-    adventure: state.adventure,
+    editor: state.editor,
   }
   return props
 }
@@ -22,4 +22,28 @@ export function verifyData(response){
 
 export function* reportError(message){
     yield put(actions.error({ "message": message }))
+}
+
+export function updateObjectInArray(array, insertItem, insertIndex) {
+    return array.map( (item, index) => {
+        if(index !== insertIndex) {
+            return item;
+        }
+        return {
+            ...item,
+            ...insertItem
+        };
+    });
+}
+
+export function insertItem(array, item, index) {
+    let newArray = array.slice();
+    newArray.splice(index, 0, item);
+    return newArray;
+}
+
+export function removeItem(array, index) {
+    let newArray = array.slice();
+    newArray.splice(index, 1);
+    return newArray;
 }

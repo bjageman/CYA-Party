@@ -3,6 +3,12 @@ from flask import abort
 from v1.apps.stories.errors import not_found
 from .models import Story, Page, Choice, Action, Item
 
+def deleteObject(object, db):
+    slug = object.slug
+    db.session.delete(object)
+    db.session.commit()
+    return slug
+
 def get_story(story_id, required=True):
     story = get_model(Story, story_id)
     if story is None:

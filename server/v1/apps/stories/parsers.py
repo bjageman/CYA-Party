@@ -40,7 +40,7 @@ def parse_page(page, detailed=True):
             result.update({
                 "description": page.description,
                 "start": page.start,
-                "choices": parse_choices(page.choices)
+                "choices": parse_choices(page.choices),
                 })
         return result
     except AttributeError as e:

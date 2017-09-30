@@ -3,65 +3,67 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Grid, Text, Card, CardContent, TextInput, Button } from 'bjageman-react-toolkit'
+import { Grid, Button, TextInput } from 'bjageman-react-toolkit'
 
-import StoryForm from './Story'
+import NewPage from './page/Create'
+import UpdatePage from './page/Update'
 
-class MainForm extends React.Component {
-    state = {
-        story: {},
-        name: "",
-        description: ""
-    }
-
+class StoryForm extends React.Component {
+    state = { addPage: false }
     componentWillMount(){
-        const story_id = this.props.match.params.story_id
-        console.log('STORY ID', story_id)
+        let story_id = this.props.match.params.story_id
         if (story_id && story_id !== "new"){
-            this.props.getItem({
+            this.props.getStory({
                 access_token: this.props.user.access_token,
                 story_id: story_id,
             })
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.adventure.story){
-            this.setState({
-                story: nextProps.adventure.story,
-            });
-        }
-    }
-
     handleInputChange = (event) => {
-        this.setState({
-            story: { ...this.state.story, [event.target.name]: event.target.value }
-        })
+        this.props.editStory(
+            { story : { ...this.props.editor.story, [event.target.name]: event.target.value } }
+        )
     }
 
     saveStory(){
-        this.props.saveItem({
-            update: this.props.adventure.story ? true: false,
+        this.props.saveStory({
             access_token: this.props.user.access_token,
-            story_id: this.props.adventure.story ? this.props.adventure.story.id : null,
-            name: this.state.story.name,
-            description: this.state.story.description,
+            story: this.props.editor.story,
         })
     }
-
     render() {
+        const editor = this.props.editor
         return(
             <Grid>
-                <Card>
-                    <Text h1>Editor</Text >
-                    <CardContent>
-                        <StoryForm story={this.state.story} onChange={this.handleInputChange}/>
-                    </CardContent>
-                    <Button onClick={() => this.saveStory()} raised>Save Story</Button>
-                </Card>
+                <div style={{ marginRight: "15px" }}>
+                    <p>Story: {editor.story.name} : {editor.story.description}</p>
+                    { editor.story.pages.map((page, i) =>
+                        <div>
+                            <hr />
+                            <p>Page: {page.name} - {page.description}</p>
+                            <div>
+                                Choices: {page.choices.map((choice, i) =>
+                                    <p key={i}>{choice.name}) {choice.description}</p>
+                                    )}
+                            </div>
+                        </div>
+                    )}
+
+                </div>
+                <div>
+                    <Button raised onClick={() => this.saveStory()}>SAVE</Button>
+                    <TextInput onChange={this.handleInputChange} name="name" label="name" value={editor.story.name} />
+                    <TextInput onChange={this.handleInputChange} name="description" label="description" value={editor.story.description} />
+                    <h4>PAGES</h4>
+                    <NewPage />
+                    { editor.story.pages.map((page, i) =>
+                        <UpdatePage key={i} index={i} page={page}/>
+                    )}
+                </div>
             </Grid>
         )
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainForm)
+export default connect(mapStateToProps, mapDispatchToProps)(StoryForm)

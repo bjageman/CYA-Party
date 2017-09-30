@@ -6,7 +6,7 @@ import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 class Security extends React.Component {
 
     render(){
-        if (this.props.user) {
+        if (this.props.user.id) {
             return(this.props.children)
         }else{
             return(<p>You need to be logged in to view this page</p>)

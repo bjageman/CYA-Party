@@ -12,7 +12,6 @@ class CharacterDeleteDialog extends React.Component {
     }
 
     handleDelete(story_id, page_id, choice_id) {
-        console.log(story_id, page_id, choice_id)
         this.props.deleteItem({
             story_id: story_id,
             page_id: page_id,

@@ -9,9 +9,20 @@ from v1.apps.stories.utils import *
 
 #Utilities/Tools
 from v1.apps.admin.models import ActionType
+from v1.apps.admin.parsers import parse_action_type, parse_action_types
 from v1.apps import socketio, db
 from v1.apps.errors import *
 from v1.apps.utils import *
+
+##
+# Editor Tools
+##
+
+@stories.route('/tools', methods=['GET'])
+@jwt_required()
+def get_tools():
+    action_types = ActionType.query.all()
+    return jsonify({"action_types": parse_action_types(action_types)})
 
 ##
 #  Stories
@@ -47,18 +58,13 @@ def create_story_request():
 
 @stories.route('/<story_id>', methods=['POST', 'PUT'])
 @jwt_required()
-def update_story(story_id):
+def update_story_request(story_id):
     story = get_story(story_id)
     data = request.get_json()
     name = get_optional_data(data, "name")
     description = get_optional_data(data, "description")
     pages = get_optional_data(data, "pages")
-    if name is not None:
-        story.set_name(name)
-    if description is not None:
-        story.description = description
-    if pages is not None:
-        story = updateStoryPages(story, pages)
+    story = update_story(story, name, description, pages)
     db.session.add(story)
     db.session.commit()
     return jsonify({"story": parse_story(story)})

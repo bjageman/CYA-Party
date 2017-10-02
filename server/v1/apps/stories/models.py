@@ -11,27 +11,23 @@ class Story(Base, TimestampMixin):
     description = db.Column(db.Text)
     image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
     image = db.relationship("Image")
+    pages = db.relationship('Page', cascade="all,delete", backref='story')
 
 class Page(Base, TimestampMixin):
     start = db.Column(db.Boolean,default=False)
-    story = db.relationship('Story', backref='pages')
     story_id = db.Column(db.ForeignKey('story.id'), index=True)
     description = db.Column(db.Text)
-
-action_choice_table = db.Table('action_choice', Base.metadata,
-    db.Column('action_id', db.Integer, db.ForeignKey('action.id')),
-    db.Column('choice_id', db.Integer, db.ForeignKey('choice.id'))
-)
+    choices = db.relationship('Choice', cascade="all,delete", backref='page')
 
 class Choice(Base, TimestampMixin):
-    page = db.relationship('Page', backref='choices')
     page_id = db.Column(db.ForeignKey('page.id'), index=True)
     content = db.Column(db.Text)
-    actions = db.relationship("Action", secondary=action_choice_table)
     required_item = db.Column(db.Integer)
+    actions = db.relationship("Action", cascade="all,delete", backref="choice")
 
 class Action(Base, TimestampMixin):
     description = db.Column(db.Text)
+    choice_id = db.Column(db.Integer, db.ForeignKey('choice.id'))
     target = db.Column(db.String(32))
     # Target is a page
     page = db.relationship('Page', backref='actions')

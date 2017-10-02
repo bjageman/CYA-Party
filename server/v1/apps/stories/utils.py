@@ -5,6 +5,8 @@ from .models import Story, Page, Choice, Action, Item
 
 from v1.apps import db
 from v1.apps.utils import *
+from v1.apps.admin.utils import get_action_type
+
 
 def deleteObject(object, db):
     slug = object.slug
@@ -57,11 +59,28 @@ def get_choice(choice_id=None, page_id=None, story_id=None):
             abort(404)
     return choice
 
+def get_action(action_id, choice_id=None, page_id=None, story_id=None):
+    action = get_model(Action, action_id)
+    if action is None:
+        abort(404, {'message': 'Action not found'})
+    if choice_id is not None:
+        choice = get_choice(choice_id)
+        if choice.id != action.choice.id:
+            abort(404)
+    if page_id is not None:
+        page = get_page(page_id)
+        if page.id != action.choice.page.id:
+            abort(404)
+    if story_id is not None:
+        story = get_story(story_id)
+        if story.id != action.choice.page.story.id:
+            abort(404)
+    return action
+
 #Create
 
 def create_story(name, owner, description=None, pages=[]):
     story = Story(name=name, owner=owner, description=description)
-    print(pages)
     for page in pages:
         name = get_required_data(page, "name")
         description = get_optional_data(page, "description")
@@ -80,14 +99,32 @@ def create_page(name, description, choices=[]):
     return page
 
 def create_choice(name, actions = []):
-    print("CHOICE CREATE", name)
     choice = Choice(name=name)
     for action in actions:
-        action = create_action(action)
+        name = get_required_data(action, "name")
+        type = get_optional_data(action, "type")
+        target = get_optional_data(action, "target")
+        action = create_action(name, type, target)
         choice.actions.append(action)
     return choice
 
+def create_action(name, type, target):
+    action_type = get_action_type(type)
+    print(action_type)
+    action = Action(name=name, type=action_type, target=target)
+    return action
+
+
 #Update
+
+def update_story(story, name, description=None, pages=None):
+    if name is not None:
+        story.set_name(name)
+    if description is not None:
+        story.description = description
+    if pages is not None:
+        story = updateStoryPages(story, pages)
+    return story
 
 def update_page(page, name, description=None, choices=None):
     if name is not None:
@@ -100,16 +137,24 @@ def update_page(page, name, description=None, choices=None):
     db.session.commit()
     return page
 
-def update_choice(choice, name, description=None, actions=None):
+def update_choice(choice, name, actions=None):
     if name is not None:
         choice.set_name(name)
-    if description is not None:
-        choice.description = description
-    # if actions is not None:
-    #     updateChoiceActions(choice, actions)
+    if actions is not None:
+        updateChoiceActions(choice, actions)
     db.session.add(choice)
     db.session.commit()
     return choice
+
+def update_action(action, name, type=None, target=None):
+    if name is not None:
+        action.set_name(name)
+    # if type is not None:
+    #     action_type = get_action_type(type)
+    #     action.action_type = action_type
+    db.session.add(action)
+    db.session.commit()
+    return action
 
 #If a list of pages is included, parse through the pages updating, creating, or deleting each one
 def updateStoryPages(story, pages):
@@ -122,7 +167,6 @@ def updateStoryPages(story, pages):
                 delete = False
         if delete:
             slug = deleteObject(original_page, db)
-            print(slug, "Deleted")
     #Create or update new/existing pages
     for page in pages:
         name = get_optional_data(page, "name")
@@ -147,15 +191,37 @@ def updatePageChoices(page, choices):
                 delete = False
         if delete:
             slug = deleteObject(original_choice, db)
-            print(slug, "Choice Deleted")
     #Create or update new/existing choices
     for choice in choices:
         choice_id = get_optional_data(choice, "id")
         name = get_optional_data(choice, "name")
-        description = get_optional_data(choice, "description")
+        actions = get_optional_data(choice, "actions")
         if choice_id is None:
-            choice = create_choice(name)
+            choice = create_choice(name, actions=actions)
             page.choices.append(choice)
         else:
             choice = get_choice(choice_id, page.id)
-            update_choice(choice, name)
+            update_choice(choice, name, actions=actions)
+
+def updateChoiceActions(choice, actions):
+    #Verify that actions were removed and if so, delete
+    for original_action in choice.actions:
+        delete = True
+        for new_action in actions:
+            action_id = get_optional_data(new_action, "id")
+            if action_id == original_action.id:
+                delete = False
+        if delete:
+            slug = deleteObject(original_action, db)
+    #Create or update new/existing actions
+    for action in actions:
+        action_id = get_optional_data(action, "id")
+        name = get_optional_data(action, "name")
+        type = get_optional_data(action, "type")
+        target = get_optional_data(action, "target")
+        if action_id is None:
+            action = create_action(name, type, target)
+            choice.actions.append(action)
+        else:
+            action = get_action(action_id, choice.id)
+            update_action(action, name, type, target)

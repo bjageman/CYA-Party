@@ -3,7 +3,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { TextInput, Text, Button } from 'bjageman-react-toolkit'
+import { TextInput, TextArea, Text, Button } from 'bjageman-react-toolkit'
+
+import ActionCreate from '../action/Create'
+import ActionUpdate from '../action/Update'
 
 class UpdateChoiceForm extends React.Component {
     handleInputChange = (event) => {
@@ -26,12 +29,18 @@ class UpdateChoiceForm extends React.Component {
 
 
     render() {
-        var choice = this.props.editor.story.pages[this.props.page.index].choices[this.props.index]
+        var page = this.props.editor.story.pages[this.props.page.index]
+        let choice = page.choices[this.props.index]
+        choice.index = this.props.index
         return(
             <div>
-                <TextInput onChange={this.handleInputChange} name="name" label="name" value={choice.name} />
-                <TextInput onChange={this.handleInputChange} name="description" label="description" value={choice.description} />
-                <Button onClick={this.handleDelete}>Delete</Button>
+                <TextInput style={{width: "100%"}} onChange={this.handleInputChange} name="name" placeholder="Choice Name" value={choice.name} />
+                <TextArea onChange={this.handleInputChange} name="description" placeholder="Description..." value={choice.description} />
+                <Button onClick={this.handleDelete}>Delete Choice</Button>
+                <ActionCreate page={page} choice={choice} />
+                { choice.actions.map((action, i) =>
+                    <ActionUpdate key={i} page={page} choice={choice} index={i} />
+                )}
             </div>
 
         )

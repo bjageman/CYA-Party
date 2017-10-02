@@ -27,11 +27,11 @@ class UpdatePageForm extends React.Component {
             <div>
                 <TextInput style={{ width: "100%" }} onChange={this.handleInputChange} name="name" placeholder="Page Name" value={page.name} />
                 <TextArea onChange={this.handleInputChange} name="description" placeholder="Enter Content..." value={page.description} />
-                <Button onClick={ () => this.props.deletePage({ index: this.props.index }) }>Delete</Button>
+                <Button onClick={ () => this.props.deletePage({ index: this.props.index }) }>Delete Page</Button>
+                <ChoiceCreate page={page}/>
                 { page.choices.map((choice, i) =>
                     <ChoiceUpdate key={i} page={page} index={i} />
                 )}
-                <ChoiceCreate page={page}/>
             </div>
 
         )

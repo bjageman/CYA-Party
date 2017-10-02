@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 import { Route, Switch } from 'react-router'
 
-import { Container, Grid, Button, TextInput } from 'bjageman-react-toolkit'
+import { Container, Grid, Button, TextInput, Icon } from 'bjageman-react-toolkit'
 
 import ReduxLink from 'base/components/links/Redux'
 import Story from './Story'
@@ -19,6 +19,9 @@ class EditorRouter extends React.Component {
                 story_id: story_id,
             })
         }
+        this.props.getTools({
+            access_token: this.props.user.access_token,
+        })
     }
 
     saveStory(){
@@ -34,7 +37,7 @@ class EditorRouter extends React.Component {
         return(
             <div>
                 <Container>
-                    <Button raised onClick={() => this.saveStory()}>SAVE</Button>
+                    <Button style={{ backgroundColor:"blue" }} float onClick={() => this.saveStory()}><Icon name="save" /></Button>
                     <ReduxLink to="/story/edit"><Button>BACK</Button></ReduxLink>
                 </Container>
             <Switch>

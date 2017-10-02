@@ -72,16 +72,9 @@ def parse_actions(actions):
 def parse_action(action):
     try:
         result = parse_base(action)
-        target = "herpderp"
-        if action.page is not None:
-            target = parse_page(action.page, detailed=False)
-        elif action.item is not None:
-            target = parse_item(action.item)
-        else:
-            target = action.target
+        result.update(parse_action_type(action.type))
         result.update({
-            "type": parse_action_type(action.type),
-            "target": target,
+            "target": action.target,
         })
         return result
     except AttributeError as e:

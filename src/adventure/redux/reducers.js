@@ -8,7 +8,19 @@ const initial = {
           name: "", description: "",
           pages:[]
       },
-      page: { name: "", description: "", choices: [{ name: "", description: "" }], choice: {}},
+      page: {
+          name: "",
+          description: "",
+          choices: [{
+              name: "",
+              description: "",
+              actions: [{
+                name: "",
+                type: "",
+                target: 0,
+              }],
+          }],
+          choice: {}},
       listing: [],
       fetching: false,
   }
@@ -17,8 +29,11 @@ const initial = {
 
 
 export const editor = createReducer({
+    [actions.getToolsSuccess]: (state, payload) => {
+        return { ...state, tools: { action_types: payload.action_types }, fetching: false }
+    },
     [actions.getStorySuccess]: (state, payload) => {
-        return { story: payload.story, page: initial.editor.page, fetching: false }
+        return { ...state, story: payload.story, page: initial.editor.page, fetching: false }
     },
     [actions.getStoriesSuccess]: (state, payload) => {
         return { listing: payload.listing, fetching: false, story: initial.editor.story, page: initial.editor.page }
@@ -31,6 +46,7 @@ export const editor = createReducer({
     },
     [actions.updatePage]: (state, payload) => {
         return {
+            ...state,
             story: {
                 ...state.story,
                 pages: updateObjectInArray( state.story.pages, payload.page, payload.index )
@@ -57,19 +73,7 @@ export const editor = createReducer({
             }
         }
     },
-    [actions.editNewChoice]: (state, payload) => {
-        return {
-            ...state,
-            story: {
-                ...state.story,
-                pages: updateObjectInArray(
-                    state.story.pages,
-                    { ...state.story.pages[payload.index], choice: payload.choice },
-                    payload.index
-                )
-            }
-        }
-    },
+    //Choice Reducers
     [actions.updateChoice]: (state, payload) => {
         var current_page = state.story.pages[payload.page_index]
         return {
@@ -119,6 +123,82 @@ export const editor = createReducer({
                     {
                         ...current_page,
                         choices: removeItem(current_page.choices, payload.index)
+                    },
+                    payload.page_index )
+            }
+        }
+    },
+    //Action Reducers
+    [actions.updateAction]: (state, payload) => {
+        var current_page = state.story.pages[payload.page_index]
+        var current_choice = current_page.choices[payload.choice_index]
+        return {
+            ...state,
+            story: {
+                ...state.story,
+                pages: updateObjectInArray(
+                    state.story.pages,
+                    {
+                        ...current_page,
+                        choices: updateObjectInArray(
+                            current_page.choices,
+                            {
+                                ...current_choice,
+                                actions: updateObjectInArray(
+                                    current_choice.actions,
+                                    payload.action,
+                                    payload.index,
+                                )
+                            },
+                            payload.choice_index
+                        ),
+
+                    },
+                    payload.page_index )
+            }
+        }
+    },
+    [actions.addAction]: (state, payload) => {
+        var current_page = state.story.pages[payload.page_index]
+        var current_choice = current_page.choices[payload.choice_index]
+        return {
+            ...state,
+            story: {
+                ...state.story,
+                pages: updateObjectInArray(
+                    state.story.pages,
+                    {
+                        ...current_page,
+                        choices: updateObjectInArray(
+                            current_page.choices,
+                            {
+                                ...current_choice,
+                                actions: [ ...current_choice.actions, payload.action ]
+                            },
+                            payload.choice_index )
+                    },
+                    payload.page_index )
+            }
+        }
+    },
+    [actions.deleteAction]: (state, payload) => {
+        var current_page = state.story.pages[payload.page_index]
+        var current_choice = current_page.choices[payload.choice_index]
+        return {
+            ...state,
+            story: {
+                ...state.story,
+                pages: updateObjectInArray(
+                    state.story.pages,
+                    {
+                        ...current_page,
+                        choices: updateObjectInArray(
+                            current_page.choices,
+                            {
+                                ...current_choice,
+                                actions: removeItem(current_choice.actions, payload.index)
+                            },
+                            payload.choice_index )
                     },
                     payload.page_index )
             }

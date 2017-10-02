@@ -13,8 +13,10 @@ def parse_action_types(action_types):
 def parse_action_type(action_type):
     try:
         return {
-            "name":action_type.slug,
-            "id": action_type.id,
+            "type_name":action_type.name,
+            "type_slug":action_type.slug,
+            "type_target":action_type.target,
+            "type_id": action_type.id,
             }
     except AttributeError:
-        return None
+        return {}

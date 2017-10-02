@@ -65,6 +65,22 @@ export function* getStories(action) {
       }
 }
 
+export function* getTools(action) {
+    try{
+      let payload = action.payload
+      let url = "stories/tools"
+      const response = yield call(getDataApi, url, payload.access_token)
+      if (response.status === 200) {
+          yield put(actions.getToolsSuccess({ "action_types": response.data.action_types }))
+        }else{
+          yield put(actions.error({ "message": response.data.description || response.data.error }))
+        }
+      }catch(error){
+        yield put(actions.error({ "message": error.message }))
+      }
+}
+
+
 export function* deleteStory(action) {
     try{
       let payload = action.payload
@@ -92,4 +108,5 @@ export default function* editSagas(){
     yield takeEvery(actions.getStory, getStory)
     yield takeEvery(actions.getStories, getStories)
     yield takeEvery(actions.deleteStory, deleteStory)
+    yield takeEvery(actions.getTools, getTools)
 }

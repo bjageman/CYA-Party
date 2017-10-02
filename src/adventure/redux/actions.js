@@ -6,11 +6,14 @@ export const getStorySuccess = createAction('Successfully recieved story data')
 export const getStories = createAction('Request a list of objects')
 export const getStoriesSuccess = createAction('Successfully recieved a list of objects')
 
+
+//Editor Options
+export const getTools = createAction('Request a set of available tools for the editor')
+export const getToolsSuccess = createAction('Successfully received tools data')
+//Story
 export const saveStory = createAction('Save a new or existing story')
 export const deleteStory = createAction('Delete an existing object')
 export const updateStory = createAction('Update an existing story')
-
-//Temp data actions
 export const editStory = createAction('A change has been made to a temporary story')
 //Page
 export const editNewPage = createAction('Edit the new page data')
@@ -26,3 +29,4 @@ export const deleteChoice = createAction('Delete an existing page')
 export const editNewAction = createAction('Edit the new action data')
 export const updateAction = createAction('Update a current action')
 export const addAction = createAction('Add a new action')
+export const deleteAction = createAction('Deletes the current action')

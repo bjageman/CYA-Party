@@ -1,14 +1,18 @@
 [
     {
-        "name": "GIVE_ITEM"
+        "name": "GIVE ITEM",
+        "target": "ITEM"
     },
     {
-        "name": "TAKE_ITEM"
+        "name": "TAKE ITEM",
+        "target": "ITEM"
     },
     {
-        "name": "KILL_PLAYER"
+        "name": "KILL PLAYER",
+        "target": "PLAYER"
     },
     {
-        "name": "GOTO_PAGE"
+        "name": "GOTO PAGE",
+        "target": "PAGE"
     }
 ]

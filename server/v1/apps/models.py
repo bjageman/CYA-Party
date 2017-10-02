@@ -10,9 +10,9 @@ class TimestampMixin(object):
     created = db.Column(db.DateTime, default=datetime.utcnow)
     updated = db.Column(db.DateTime, default=datetime.utcnow)
 
-    @declared_attr
-    def __mapper_args__(cls):
-        return {'order_by': 'created desc'}
+    # @declared_attr
+    # def __mapper_args__(cls):
+    #     return {'order_by': 'created desc'}
 
     def readable_date(self, date, format=DATETIMEFORMAT):
         """Format the given date using the given format."""

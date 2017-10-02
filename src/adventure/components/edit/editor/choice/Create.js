@@ -20,8 +20,9 @@ class NewChoiceForm extends React.Component {
         this.props.addChoice({
             index : index,
             choice: {
-                name: page.choice.name,
-                description: page.choice.description,
+                name: page.choice ? page.choice.name : "",
+                description: page.choice ? page.choice.description : "",
+                actions: [],
             },
         })
         }

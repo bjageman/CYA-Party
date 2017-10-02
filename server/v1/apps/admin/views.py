@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, abort
 from . import admin
 from .models import ActionType
 from .parsers import parse_action_type, parse_action_types
-
+from .utils import get_action_type
 #Utilities/Tools
 from v1.apps import socketio, db
 from v1.apps.errors import *
@@ -13,17 +13,10 @@ from v1.apps.utils import get_required_data, get_optional_data, get_model
 #  Admin Tools
 ##
 
-#Action Types
-def get_action_type(action_type_id):
-    action_type = get_model(ActionType, action_type_id)
-    if action_type is None:
-        abort(404)
-    return action_type
-
 url_base_action_types = "/action_types"
 
 @admin.route(url_base_action_types, methods=['GET'])
-def get_action_types():
+def get_action_types_request():
     action_types = ActionType.query.all()
     return jsonify(parse_action_types(action_types))
 

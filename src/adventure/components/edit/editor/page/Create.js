@@ -5,12 +5,14 @@ import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
 import { TextInput, Text, Button } from 'bjageman-react-toolkit'
 
-import Delete from 'base/components/editor/delete'
-
 class NewPageForm extends React.Component {
     handleInputChange = (event) => {
         this.props.editNewPage(
-            { page: { ...this.props.editor.page, [event.target.name]: event.target.value } }
+            { page: {
+                ...this.props.editor.page,
+                [event.target.name]: event.target.value
+                }
+            }
         )
     }
 
@@ -21,7 +23,8 @@ class NewPageForm extends React.Component {
             page: {
                 name: this.props.editor.page.name,
                 description: this.props.editor.page.description,
-                choices: []
+                choices: [],
+                choice: { name: "", description: "" }
             },
         })
         }
@@ -33,11 +36,11 @@ class NewPageForm extends React.Component {
             <div>
                 { page ?
                 <div>
-                <Text h3>New Page</Text>
+                {/*<Text h3>New Page</Text>
                 <TextInput onChange={this.handleInputChange} name="name" label="name" value={page.name} />
                 <TextInput onChange={this.handleInputChange} name="description" label="description" value={page.description} />
-
-                <Button raised onClick={() => this.addPage()}>Add New Page</Button>
+                */}
+                <Button raised onClick={() => this.addPage()}>Add Page</Button>
                 </div>
                 : null }
             </div>

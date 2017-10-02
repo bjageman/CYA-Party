@@ -3,23 +3,30 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Button, GridItem, Card, CardContent, Text } from 'bjageman-react-toolkit'
+import { Button, Grid, GridItem, Text } from 'bjageman-react-toolkit'
 import ReduxLink from 'base/components/links/Redux'
-import Delete from 'base/components/editor/delete'
+import Delete from './delete'
 
 class StoryListItem extends React.Component {
     render() {
         const story = this.props.story
         return(
-            <Card>
-                <CardContent>
-                    <Text h1> {story.name} </Text>
-                    <Text p> {story.description} </Text>
-                    <ReduxLink to={"/story/edit/" + story.id }><Button raised>Edit</Button></ReduxLink>
-                    <Delete story_id={story.id} type="story" >Delete</Delete>
-                </CardContent>
-            </Card>
+            <div style={styles.container}>
+                <Text h1> {story.name} </Text>
+                <Text p> {story.description} </Text>
+                <ReduxLink to={"/story/edit/" + story.id }><Button raised>Edit</Button></ReduxLink>
+                <Delete story_id={story.id} type="story" >Delete</Delete>
+            </div>
         )
+    }
+}
+
+const styles = {
+    container: {
+        border: "1px solid black",
+        borderRadius: "10px",
+        paddingLeft: "10px",
+        paddingRight: "10px",
     }
 }
 
@@ -35,11 +42,11 @@ class StoryList extends React.Component {
         const story_listing = this.props.editor.listing
         if (story_listing) {
             return(
-                <div>
+                <Grid>
                 {story_listing.map((story, i) =>
                     <GridItem key={i}><StoryListItem story={story} /></GridItem>
                 )}
-                </div>
+                </Grid>
             )
         }else{
             return null

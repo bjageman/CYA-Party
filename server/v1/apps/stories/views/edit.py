@@ -1,11 +1,12 @@
 from flask import request, jsonify, abort
 from flask_jwt import jwt_required, current_identity
 #App Specific
-from .. import stories
-from ..models import Story, Page, Choice, Action
+from v1.apps.stories import stories
+from v1.apps.stories.models import Story, Page, Choice, Action
 from v1.apps.stories.parsers import *
 from v1.apps.stories.errors import *
 from v1.apps.stories.utils import *
+
 #Utilities/Tools
 from v1.apps.admin.models import ActionType
 from v1.apps import socketio, db
@@ -33,35 +34,16 @@ def get_story_request(story_id):
 
 @stories.route('', methods=['POST', 'PUT'])
 @jwt_required()
-def create_story():
+def create_story_request():
     data = request.get_json()
     name = get_required_data(data, "name")
     description = get_optional_data(data, "description")
-    story = Story(name=name, owner=current_identity, description=description)
+    pages = get_optional_data(data, "pages")
+    story = create_story(name, current_identity, description, pages)
+    print(story)
     db.session.add(story)
     db.session.commit()
     return jsonify({"story": parse_story(story) })
-
-def updateStoryPages(story, pages):
-    #Verify that pages were removed and if so, delete
-    for original_page in story.pages:
-        delete = True
-        for new_page in pages:
-            page_id = get_optional_data(new_page, "id")
-            if page_id == original_page.id:
-                delete = False
-        if delete:
-            slug = deleteObject(original_page, db)
-            print(slug, "Deleted")
-    for page in pages:
-        name = get_optional_data(page, "name")
-        page_id = get_optional_data(page, "id")
-        description = get_optional_data(page, "description")
-        if page_id is None:
-            create_page(story, name, description)
-        else:
-            page = get_page(page_id, story.id)
-            update_page(page, name, description)
 
 @stories.route('/<story_id>', methods=['POST', 'PUT'])
 @jwt_required()
@@ -76,7 +58,7 @@ def update_story(story_id):
     if description is not None:
         story.description = description
     if pages is not None:
-        updateStoryPages(story, pages)
+        story = updateStoryPages(story, pages)
     db.session.add(story)
     db.session.commit()
     return jsonify({"story": parse_story(story)})
@@ -168,12 +150,6 @@ def get_page_request(story_id, page_id):
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-def create_page(story, name, description):
-    page = Page(name=name, description=description)
-    story.pages.append(page)
-    db.session.add(story)
-    db.session.commit()
-
 @stories.route(url_base_pages, methods=['POST', 'PUT'])
 @jwt_required()
 def create_page_request(story_id):
@@ -182,17 +158,8 @@ def create_page_request(story_id):
     name = get_required_data(data, "name")
     description = get_optional_data(data, "description")
     choices = get_optional_data(data, "choices")
-    create_page(story, name, description)
+    create_page(story, name, description, choices)
     return jsonify({"story": parse_story(story) })
-
-def update_page(page, name, description):
-    if name is not None:
-        page.set_name(name)
-    if name is not None:
-        page.description = description
-    db.session.add(page)
-    db.session.commit()
-    return True
 
 @stories.route(url_base_pages + '/<page_id>', methods=['POST', 'PUT'])
 @jwt_required()
@@ -222,13 +189,6 @@ def delete_page_request(story_id, page_id):
 #  Choices
 ##
 
-def create_choice(name, actions = []):
-    choice = Choice(name=name)
-    for action_data in actions:
-        action = create_action(action_data)
-        choice.actions.append(action)
-    return choice
-
 url_base_choices = url_base_pages + "/<page_id>/choices"
 
 @stories.route(url_base_choices, methods=['GET'])
@@ -255,6 +215,18 @@ def create_choice_request(story_id, page_id):
     db.session.commit()
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
+
+@stories.route(url_base_choices + '/<choice_id>', methods=['POST', 'PUT'])
+@jwt_required()
+def update_choice_request(story_id, page_id, choice_id):
+    choice = get_choice(choice_id, page_id, story_id)
+    data = request.get_json()
+    name = get_optional_data(data, "name")
+    description = get_optional_data(data, "description")
+    choice = update_choice(choice, name)
+    story = get_story(story_id)
+    return jsonify({"story": parse_story(story) })
+
 
 @stories.route(url_base_choices + '/<choice_id>', methods=['DELETE'])
 @jwt_required()

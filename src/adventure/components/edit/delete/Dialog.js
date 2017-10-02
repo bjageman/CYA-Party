@@ -12,10 +12,8 @@ class CharacterDeleteDialog extends React.Component {
     }
 
     handleDelete(story_id, page_id, choice_id) {
-        this.props.deleteItem({
+        this.props.deleteStory({
             story_id: story_id,
-            page_id: page_id,
-            choice_id: choice_id,
         })
         this.props.onRequestClose()
     }
@@ -23,14 +21,12 @@ class CharacterDeleteDialog extends React.Component {
     render(){
         const name = this.props.name
         const story_id = this.props.story_id
-        const page_id = this.props.page_id
-        const choice_id = this.props.choice_id
         return(
             <Dialog
                 open={this.props.open}
                 onRequestClose={this.props.onRequestClose} >
                     Are you sure you want to delete {name} ?
-                <Button onClick = {() => this.handleDelete(story_id, page_id, choice_id)} color="primary">
+                <Button onClick = {() => this.handleDelete(story_id)} color="primary">
                   Delete
                 </Button>
                 <Button onClick = {this.props.onRequestClose} color="primary">

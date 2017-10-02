@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router'
 import Home from './index'
 import Play from './play/'
 import Edit from './edit/'
-import Editor from './edit/forms/'
+import Editor from './edit/editor/'
 
 import Security from 'base/components/Security'
 

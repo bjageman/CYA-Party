@@ -7,14 +7,19 @@ import { processListingURL, processSpecificItemURL } from './utils'
 export function* saveStory(action) {
     try{
       let payload = action.payload
-      let url = "stories/" + payload.story.id
+      let url = ""
+      if (payload.story.id){
+          url = "stories/" + payload.story.id
+      }else{
+          url = "stories"
+      }
       const response = yield call(postDataApi, url, payload.story, payload.access_token)
       if (response.status === 200) {
           yield put(actions.success({ "message": "Save Complete" }))
           if (response.data.story){
               yield put(actions.getStorySuccess({ story: response.data.story }))
               if (payload.redirect){
-                  yield put(push("/story/edit/" + response.data.story.id))
+                  yield put(push("/story/edit/" + response.data.story.slug))
               }
           }
         }else{

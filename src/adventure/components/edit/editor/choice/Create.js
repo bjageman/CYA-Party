@@ -5,8 +5,6 @@ import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
 import { TextInput, Text, Button } from 'bjageman-react-toolkit'
 
-import Delete from 'base/components/editor/delete'
-
 class NewChoiceForm extends React.Component {
     handleInputChange = (event) => {
         console.log(event.target.name, event.target.value)
@@ -18,8 +16,7 @@ class NewChoiceForm extends React.Component {
     addChoice(){
         var index = this.props.page.index
         var page = this.props.editor.story.pages[index]
-        console.log(index, page)
-        if (page && page.choice){
+        if (page){
         this.props.addChoice({
             index : index,
             choice: {
@@ -37,9 +34,11 @@ class NewChoiceForm extends React.Component {
             <div>
                 { page ?
                 <div>
+                {/*
                 <Text h3>New Choice</Text>
                 <TextInput onChange={this.handleInputChange} name="name" label="name" value={choice.name} />
                 <TextInput onChange={this.handleInputChange} name="description" label="description" value={choice.description} />
+                */}
                 <Button onClick={() => this.addChoice()}>Add New Choice</Button>
                 </div>
                 : null }

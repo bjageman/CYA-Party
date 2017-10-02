@@ -9,10 +9,8 @@ class Story extends React.Component {
   render() {
     return (
         <Grid>
-            <GridItem>
             <ReduxLink to="/story/edit"><Button raised>Go to Editor</Button></ReduxLink>
             <ReduxLink to="/story/play"><Button raised>Play a Game</Button></ReduxLink>
-            </GridItem>
         </Grid>
     )
   }

@@ -11,10 +11,10 @@ class EditHome extends React.Component {
 
     render() {
         return(
-            <Grid>
-                <ReduxLink to ="/story/edit/new"><Button float><Icon name="add" /></Button></ReduxLink>
-                <StoryList />
-            </Grid>
+            <div>
+            <ReduxLink to ="/story/edit/new"><Button float><Icon name="add" /></Button></ReduxLink>
+            <StoryList />
+            </div>
         )
     }
 }

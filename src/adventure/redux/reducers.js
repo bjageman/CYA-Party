@@ -1,16 +1,12 @@
 import { createReducer } from 'redux-act'
 import * as actions from './actions'
-import { updateObjectInArray, insertItem, removeItem } from 'redux/utils'
-import { Map, List } from 'immutable'
+import { updateObjectInArray, removeItem } from 'redux/utils'
 
 const initial = {
   editor: {
       story: {
           name: "", description: "",
-          pages:[{
-              choice: {  name: "", description: "", },
-              choices: []
-          }]
+          pages:[]
       },
       page: { name: "", description: "", choices: [{ name: "", description: "" }], choice: {}},
       listing: [],
@@ -62,7 +58,6 @@ export const editor = createReducer({
         }
     },
     [actions.editNewChoice]: (state, payload) => {
-        console.log(payload.index, state.story.pages[payload.index], payload.choice)
         return {
             ...state,
             story: {
@@ -92,13 +87,12 @@ export const editor = createReducer({
                         ),
 
                     },
-                    payload.index )
+                    payload.page_index )
             }
         }
     },
     [actions.addChoice]: (state, payload) => {
         var current_page = state.story.pages[payload.index]
-        console.log(payload.index, current_page)
         return {
             ...state,
             story: {
@@ -107,20 +101,27 @@ export const editor = createReducer({
                     state.story.pages,
                     {
                         ...current_page,
-                        choice: initial.editor.story.pages[0].choice ,
+                        choice: { name: "", description: ""},
                         choices: [ ...current_page.choices, payload.choice ]
                     },
                     payload.index )
             }
         }
     },
-    // [actions.deleteChoice]: (state, payload) => {
-    //     return {
-    //         ...state,
-    //         story: {
-    //             ...state.story,
-    //             pages: removeItem(state.story.pages, payload.index)
-    //         }
-    //     }
-    // },
+    [actions.deleteChoice]: (state, payload) => {
+        var current_page = state.story.pages[payload.page_index]
+        return {
+            ...state,
+            story: {
+                ...state.story,
+                pages: updateObjectInArray(
+                    state.story.pages,
+                    {
+                        ...current_page,
+                        choices: removeItem(current_page.choices, payload.index)
+                    },
+                    payload.page_index )
+            }
+        }
+    },
 }, initial.editor)

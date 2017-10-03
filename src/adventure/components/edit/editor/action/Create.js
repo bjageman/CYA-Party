@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { TextInput, Text, Button } from 'bjageman-react-toolkit'
+import { Button } from 'bjageman-react-toolkit'
 
 class NewActionForm extends React.Component {
     addAction(){

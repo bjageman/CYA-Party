@@ -2,9 +2,8 @@ import React from 'react'
 //Redux
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
-import { Route, Switch } from 'react-router'
 
-import { Grid, Button, TextInput, Text } from 'bjageman-react-toolkit'
+import { Text } from 'bjageman-react-toolkit'
 
 import UpdatePage from './Update'
 

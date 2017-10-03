@@ -3,12 +3,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { TextInput, TextArea, Text, Button } from 'bjageman-react-toolkit'
+import { TextInput, Button } from 'bjageman-react-toolkit'
 
 class UpdateActionForm extends React.Component {
-    state = {
-        command: ""
-    }
+    state = { command: "" }
     handleInputChange = (event) => {
         this.props.updateAction({
             index: this.props.index,
@@ -61,7 +59,7 @@ class UpdateActionForm extends React.Component {
                     )}
                 </select>
                 <select value={action.target} style={styles.select} onChange={this.handleInputChange} name="target">
-                { command.slug == "goto-page" ?
+                { command.slug === "goto-page" ?
                     this.props.editor.story.pages.map((page, i) =>
                         <option key={i} value={page.slug}>{page.name}</option>
                     )

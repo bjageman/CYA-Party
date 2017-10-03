@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { TextInput, Text, Button } from 'bjageman-react-toolkit'
+import { Button } from 'bjageman-react-toolkit'
 
 class NewChoiceForm extends React.Component {
     handleInputChange = (event) => {
@@ -28,25 +28,7 @@ class NewChoiceForm extends React.Component {
         }
     }
 
-    render() {
-        var page = this.props.page
-        var choice = page.choice || {}
-        return(
-            <div>
-                { page ?
-                <div>
-                {/*
-                <Text h3>New Choice</Text>
-                <TextInput onChange={this.handleInputChange} name="name" label="name" value={choice.name} />
-                <TextInput onChange={this.handleInputChange} name="description" label="description" value={choice.description} />
-                */}
-                <Button onClick={() => this.addChoice()}>Add New Choice</Button>
-                </div>
-                : null }
-            </div>
-
-        )
-    }
+    render() { return <Button onClick={() => this.addChoice()}>Add New Choice</Button> }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewChoiceForm)

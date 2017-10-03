@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 import { Route, Switch } from 'react-router'
 
-import { Container, Grid, Button, TextInput, Icon } from 'bjageman-react-toolkit'
+import { Container, Button, Icon } from 'bjageman-react-toolkit'
 
 import ReduxLink from 'base/components/links/Redux'
 import Story from './Story'
@@ -29,7 +29,7 @@ class EditorRouter extends React.Component {
             access_token: this.props.user.access_token,
             story: this.props.editor.story,
             redirect: true,
-            notification: true, 
+            notification: true,
         })
     }
 

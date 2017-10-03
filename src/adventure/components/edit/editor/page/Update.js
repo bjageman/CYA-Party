@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { TextInput, TextArea, Text, Button } from 'bjageman-react-toolkit'
+import { TextInput, TextArea, Button } from 'bjageman-react-toolkit'
 
 import ChoiceCreate from '../choice/Create'
 import ChoiceUpdate from '../choice/Update'

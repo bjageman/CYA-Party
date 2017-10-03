@@ -8,8 +8,8 @@ from v1.apps.stories.errors import *
 from v1.apps.stories.utils import *
 
 #Utilities/Tools
-from v1.apps.admin.models import ActionType
-from v1.apps.admin.parsers import parse_action_type, parse_action_types
+from v1.apps.admin.models import Command
+from v1.apps.admin.parsers import parse_command, parse_commands
 from v1.apps import socketio, db
 from v1.apps.errors import *
 from v1.apps.utils import *
@@ -21,8 +21,8 @@ from v1.apps.utils import *
 @stories.route('/tools', methods=['GET'])
 @jwt_required()
 def get_tools():
-    action_types = ActionType.query.all()
-    return jsonify({"action_types": parse_action_types(action_types)})
+    commands = Command.query.all()
+    return jsonify({"commands": parse_commands(commands)})
 
 ##
 #  Stories
@@ -266,16 +266,16 @@ def create_action_request(story_id, page_id, choice_id):
     data = request.get_json()
     name = get_required_data(data, "name")
     target = get_required_data(data, "target")
-    action_type = get_required_data(data, "type")
-    action = create_action(name, target, action_type)
+    command = get_required_data(data, "command")
+    action = create_action(name, target, command)
     choice.actions.append(action)
     db.session.add(choice)
     db.session.commit()
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-def create_action(name, target, action_type):
-    action_type_model = get_model(ActionType, action_type)
-    if action_type_model is None:
-        abort(404, {'message': 'Action Type not found'})
-    return Action(name=name, target=target, type=action_type_model)
+def create_action(name, target, command):
+    command = get_model(Command, command)
+    if command is None:
+        abort(404, {'message': 'Command not found'})
+    return Action(name=name, target=target, command=command)

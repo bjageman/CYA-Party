@@ -4,19 +4,19 @@ from v1.apps.parsers import parse_base, parse_image
 #  Admin Parsers
 ##
 
-def parse_action_types(action_types):
-    action_type_set = []
-    for action_type in action_types:
-        action_type_set.append(parse_action_type(action_type))
-    return(action_type_set)
+def parse_commands(commands):
+    command_set = []
+    for command in commands:
+        command_set.append(parse_command(command))
+    return(command_set)
 
-def parse_action_type(action_type):
+def parse_command(command):
     try:
         return {
-            "type_name":action_type.name,
-            "type_slug":action_type.slug,
-            "type_target":action_type.target,
-            "type_id": action_type.id,
+            "name":command.name,
+            "slug":command.slug,
+            "target":command.target,
+            "id": command.id,
             }
     except AttributeError:
-        return {}
+        return None

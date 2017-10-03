@@ -3,7 +3,7 @@ from v1.apps import app, db
 from v1.apps.models import Image
 from v1.apps.users.models import User
 from v1.apps.stories.models import Story, Page, Choice, Action, Item
-from v1.apps.admin.models import ActionType
+from v1.apps.admin.models import Command
 
 from v1.apps.stories.parsers import *
 
@@ -53,18 +53,18 @@ def importStoriesData(data, db=db):
                     required_item = story_key['items'][choice['required_item']]
                 choice_model = Choice(page=page_model, name=choice['name'], required_item=required_item)
                 for action in choice['actions']:
-                    action_type = ActionType.query.filter_by(name=action['type']).first()
-                    if action_type is not None:
+                    command = Command.query.filter_by(name=action['type']).first()
+                    if command is not None:
                         target = None
                         target_item = None
                         target_page = None
-                        if 'GOTO_PAGE' in action_type.name:
+                        if 'GOTO_PAGE' in command.name:
                             target_page = Page.query.get(story_key['pages'][action['target']])
-                        elif 'GIVE_ITEM' in action_type.name or 'TAKE_ITEM' in action_type.name:
+                        elif 'GIVE_ITEM' in command.name or 'TAKE_ITEM' in command.name:
                             target_item = Item.query.get(story_key['items'][action['target']])
                         else:
                             target = action['target']
-                        action_model = Action(name=action['name'], type=action_type, target=target, item=target_item, page=target_page)
+                        action_model = Action(name=action['name'], type=command, target=target, item=target_item, page=target_page)
                         choice_model.actions.append(action_model)
                 db.session.add(choice_model)
             db.session.add(page_model)
@@ -84,13 +84,13 @@ def importUserData(data, db=db):
     db.session.commit()
     print("Imported", len(data), "users")
 
-def importActionTypes(data, db=db):
-    for actiontype in data:
-        if ActionType.query.filter_by(name=actiontype['name']).first() is None:
-            actiontype_model = ActionType(name=actiontype['name'])
-            db.session.add(actiontype_model)
+def importCommands(data, db=db):
+    for command in data:
+        if Command.query.filter_by(name=command['name']).first() is None:
+            command_model = Command(name=command['name'], target=command['target'])
+            db.session.add(command_model)
     db.session.commit()
-    print("Imported", len(data), "action types")
+    print("Imported", len(data), "commands")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-t", "--type", help="The type of data to be imported or exported [users, stories, pages]")
@@ -109,7 +109,7 @@ if __name__ == '__main__':
             importStoriesData(data)
         if args.type == "users":
             importUserData(data)
-        if args.type == "actiontype":
-            importActionTypes(data)
+        if args.type == "command":
+            importCommands(data)
     if args.export is not None:
         print(json.dumps(exportData(Story), indent=4, sort_keys=True))

@@ -35,8 +35,8 @@ class Action(Base, TimestampMixin):
     # Target is an item
     item = db.relationship('Item', backref='actions')
     item_id = db.Column(db.ForeignKey('item.id'))
-    type = db.relationship('ActionType', backref='actions')
-    type_id = db.Column(db.ForeignKey('action_type.id'), index=True)
+    command = db.relationship('Command', backref='actions')
+    command_id = db.Column(db.ForeignKey('command.id'), index=True)
 
 class Item(Base, TimestampMixin):
     story = db.relationship('Story', backref='items')

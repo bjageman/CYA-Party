@@ -7,7 +7,7 @@ import { TextInput, TextArea, Text, Button } from 'bjageman-react-toolkit'
 
 class UpdateActionForm extends React.Component {
     state = {
-        action_type: ""
+        command: ""
     }
     handleInputChange = (event) => {
         this.props.updateAction({
@@ -29,9 +29,20 @@ class UpdateActionForm extends React.Component {
         })
     }
 
-    handleActionTypeChange = (event) => {
-        this.handleInputChange(event)
-        this.setState({ action_type: event.target.value })
+    handleCommandChange = (event) => {
+        console.log(event.target.name, event.target.value)
+        this.props.updateAction({
+            index: this.props.index,
+            page_index: this.props.page.index,
+            choice_index: this.props.choice.index,
+            action: {
+                ...this.props.choice.actions[this.props.index],
+                command: {
+                    ...this.props.choice.actions[this.props.index].command,
+                    [event.target.name]: event.target.value,
+                }
+            }
+        })
     }
 
 
@@ -39,17 +50,19 @@ class UpdateActionForm extends React.Component {
         var page = this.props.editor.story.pages[this.props.page.index]
         var choice = page.choices[this.props.choice.index]
         var action = choice.actions[this.props.index]
-        var action_types = this.props.editor.tools ? this.props.editor.tools.action_types : []
+        var command = action.command ? action.command : {}
+        var commands = this.props.editor.tools ? this.props.editor.tools.commands : []
         return(
             <div>
                 <TextInput style={{width: "100%"}} onChange={this.handleInputChange} name="name" placeholder="Action Name" value={action.name} />
-                <select value={action.type_slug} style={styles.select} onChange={this.handleActionTypeChange} name="type">
-                    { action_types.map((action_type, i ) =>
-                        <option key={i} value={action_type.slug} >{action_type.name}</option>
+                <select value={command.slug} style={styles.select} onChange={this.handleCommandChange} name="slug">
+                    { commands.map((command, i ) =>
+                        <option key={i} value={command.slug} >{command.name}</option>
                     )}
                 </select>
-                <select style={styles.select} onChange={this.handleInputChange} name="target">
-                { action.type_slug == "goto-page" ?
+                {action.target}
+                <select value={action.target} style={styles.select} onChange={this.handleInputChange} name="target">
+                { command.slug == "goto-page" ?
                     this.props.editor.story.pages.map((page, i) =>
                         <option key={i} value={page.slug}>{page.name}</option>
                     )

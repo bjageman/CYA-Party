@@ -16,7 +16,7 @@ const initial = {
               description: "",
               actions: [{
                 name: "",
-                type: "",
+                command: {},
                 target: 0,
               }],
           }],
@@ -30,7 +30,7 @@ const initial = {
 
 export const editor = createReducer({
     [actions.getToolsSuccess]: (state, payload) => {
-        return { ...state, tools: { action_types: payload.action_types }, fetching: false }
+        return { ...state, tools: { commands: payload.commands }, fetching: false }
     },
     [actions.getStorySuccess]: (state, payload) => {
         return { ...state, story: payload.story, page: initial.editor.page, fetching: false }

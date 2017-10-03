@@ -5,7 +5,7 @@ from .models import Story, Page, Choice, Action, Item
 
 from v1.apps import db
 from v1.apps.utils import *
-from v1.apps.admin.utils import get_action_type
+from v1.apps.admin.utils import get_command
 
 
 def deleteObject(object, db):
@@ -102,16 +102,17 @@ def create_choice(name, actions = []):
     choice = Choice(name=name)
     for action in actions:
         name = get_required_data(action, "name")
-        type = get_optional_data(action, "type")
+        command = get_optional_data(action, "command")
         target = get_optional_data(action, "target")
-        action = create_action(name, type, target)
+        action = create_action(name, command, target)
         choice.actions.append(action)
     return choice
 
-def create_action(name, type, target):
-    action_type = get_action_type(type)
-    print(action_type)
-    action = Action(name=name, type=action_type, target=target)
+def create_action(name, command=None, target=None):
+    if command is not None:
+        slug = get_required_data(command, "slug")
+        command = get_command(slug)
+    action = Action(name=name, command=command, target=target)
     return action
 
 
@@ -146,12 +147,16 @@ def update_choice(choice, name, actions=None):
     db.session.commit()
     return choice
 
-def update_action(action, name, type=None, target=None):
+def update_action(action, name, command=None, target=None):
+    print(action.name, name, command, target)
     if name is not None:
         action.set_name(name)
-    # if type is not None:
-    #     action_type = get_action_type(type)
-    #     action.action_type = action_type
+    if command is not None:
+        slug = get_required_data(command, "slug")
+        command = get_command(slug)
+        action.command = command
+    if target is not None:
+        action.target = target
     db.session.add(action)
     db.session.commit()
     return action
@@ -217,11 +222,11 @@ def updateChoiceActions(choice, actions):
     for action in actions:
         action_id = get_optional_data(action, "id")
         name = get_optional_data(action, "name")
-        type = get_optional_data(action, "type")
+        command = get_optional_data(action, "command")
         target = get_optional_data(action, "target")
         if action_id is None:
-            action = create_action(name, type, target)
+            action = create_action(name, command, target)
             choice.actions.append(action)
         else:
             action = get_action(action_id, choice.id)
-            update_action(action, name, type, target)
+            update_action(action, name, command, target)

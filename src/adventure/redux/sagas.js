@@ -71,7 +71,7 @@ export function* getTools(action) {
       let url = "stories/tools"
       const response = yield call(getDataApi, url, payload.access_token)
       if (response.status === 200) {
-          yield put(actions.getToolsSuccess({ "action_types": response.data.action_types }))
+          yield put(actions.getToolsSuccess({ "commands": response.data.commands }))
         }else{
           yield put(actions.error({ "message": response.data.description || response.data.error }))
         }

@@ -1,7 +1,7 @@
 from v1.apps import db
 from v1.apps.models import *
 
-class ActionType(Base, TimestampMixin):
+class Command(Base, TimestampMixin):
     name = db.Column(db.String(80), unique=True)
     target = db.Column(db.String(80))
 

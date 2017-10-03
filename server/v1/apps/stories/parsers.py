@@ -1,6 +1,6 @@
 from v1.apps.parsers import parse_base, parse_image
 from v1.apps.users.parsers import parse_user
-from v1.apps.admin.parsers import parse_action_type, parse_action_types
+from v1.apps.admin.parsers import parse_command, parse_commands
 
 def parse_stories(stories, detailed=False):
     story_set = []
@@ -67,13 +67,14 @@ def parse_actions(actions):
     action_set = []
     for action in actions:
         action_set.append(parse_action(action))
+    print(action_set)
     return(action_set)
 
 def parse_action(action):
     try:
         result = parse_base(action)
-        result.update(parse_action_type(action.type))
         result.update({
+            "command": parse_command(action.command),
             "target": action.target,
         })
         return result

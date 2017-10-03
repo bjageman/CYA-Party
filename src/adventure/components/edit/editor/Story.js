@@ -6,12 +6,12 @@ import { Route, Switch } from 'react-router'
 
 import { Container, Button, TextInput, TextArea } from 'bjageman-react-toolkit'
 
-import NewPage from './page/Create'
+import AddPage from './page/Add'
 import UpdatePage from './page/Update'
 
 class StoryForm extends React.Component {
     handleInputChange = (event) => {
-        this.props.editStory(
+        this.props.updateStory(
             { story : { ...this.props.editor.story, [event.target.name]: event.target.value } }
         )
     }
@@ -48,7 +48,7 @@ class StoryForm extends React.Component {
                     name="description" placeholder="Description..."
                     value={editor.story.description} />
                 <h4>PAGES</h4>
-                <NewPage />
+                <AddPage />
                 { editor.story.pages.map((page, i) =>
                     <UpdatePage key={i} index={i} page={page}/>
                 )}

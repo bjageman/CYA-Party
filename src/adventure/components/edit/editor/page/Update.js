@@ -25,6 +25,7 @@ class UpdatePageForm extends React.Component {
         page.index = this.props.index
         return(
             <div>
+                <hr />
                 <TextInput style={{ width: "100%" }} onChange={this.handleInputChange} name="name" placeholder="Page Name" value={page.name} />
                 <TextArea onChange={this.handleInputChange} name="description" placeholder="Enter Content..." value={page.description} />
                 <Button onClick={ () => this.props.deletePage({ index: this.props.index }) }>Delete Page</Button>

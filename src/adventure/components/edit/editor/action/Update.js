@@ -60,7 +60,6 @@ class UpdateActionForm extends React.Component {
                         <option key={i} value={command.slug} >{command.name}</option>
                     )}
                 </select>
-                {action.target}
                 <select value={action.target} style={styles.select} onChange={this.handleInputChange} name="target">
                 { command.slug == "goto-page" ?
                     this.props.editor.story.pages.map((page, i) =>

@@ -38,11 +38,8 @@ export const editor = createReducer({
     [actions.getStoriesSuccess]: (state, payload) => {
         return { listing: payload.listing, fetching: false, story: initial.editor.story, page: initial.editor.page }
     },
-    [actions.editStory]: (state, payload) => {
+    [actions.updateStory]: (state, payload) => {
         return { ...state, story: payload.story }
-    },
-    [actions.editNewPage]: (state, payload) => {
-        return { ...state, page: { ...state.page, name: payload.page.name, description: payload.page.description } }
     },
     [actions.updatePage]: (state, payload) => {
         return {

@@ -29,6 +29,7 @@ class EditorRouter extends React.Component {
             access_token: this.props.user.access_token,
             story: this.props.editor.story,
             redirect: true,
+            notification: true, 
         })
     }
 

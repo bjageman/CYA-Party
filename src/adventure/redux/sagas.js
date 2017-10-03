@@ -15,7 +15,9 @@ export function* saveStory(action) {
       }
       const response = yield call(postDataApi, url, payload.story, payload.access_token)
       if (response.status === 200) {
-          yield put(actions.success({ "message": "Save Complete" }))
+          if (payload.notification) {
+              yield put(actions.success({ "message": "Save Complete" }))
+          }
           if (response.data.story){
               yield put(actions.getStorySuccess({ story: response.data.story }))
               if (payload.redirect){
@@ -88,18 +90,13 @@ export function* deleteStory(action) {
       const response = yield call(deleteDataApi, url, payload.access_token);
       if (response.status === 200) {
           yield put(actions.success({ "message": response.data.slug + " deleted" }))
-          if (response.data.story){
-              yield put(actions.getStorySuccess({ story: response.data.story }))
-              if (payload.redirect){
-                  yield put(push("/story/edit/" + response.data.story.id))
-              }
-          }
-        }else{
+          yield put(actions.getStories({ access_token: payload.access_token }))
+      }else{
           yield put(actions.error({ "message": response.data.description || response.data.error }))
-        }
-      }catch(error){
-        yield put(actions.error({ "message": error.message }))
       }
+  }catch(error){
+        yield put(actions.error({ "message": error.message }))
+    }
 }
 
 

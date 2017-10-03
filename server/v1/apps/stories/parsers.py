@@ -67,7 +67,6 @@ def parse_actions(actions):
     action_set = []
     for action in actions:
         action_set.append(parse_action(action))
-    print(action_set)
     return(action_set)
 
 def parse_action(action):
@@ -79,7 +78,6 @@ def parse_action(action):
         })
         return result
     except AttributeError as e:
-        print(e)
         return None
 
 def parse_items(items):
@@ -96,7 +94,6 @@ def parse_item(item):
         })
         return result
     except AttributeError as e:
-        print(e)
         return None
 
 def parse_sessions(sessions):
@@ -114,7 +111,6 @@ def parse_session(session):
         })
         return result
     except AttributeError as e:
-        print(e)
         return None
 
 def parse_players(players):
@@ -132,7 +128,6 @@ def parse_player(player):
         })
         return result
     except AttributeError as e:
-        print(e)
         return None
 
 def vote_count(votes):
@@ -152,5 +147,4 @@ def parse_vote(vote):
         })
         return result
     except AttributeError as e:
-        print(e)
         return None

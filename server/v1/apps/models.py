@@ -34,7 +34,7 @@ class Base(db.Model):
     def set_name(self, name):
         slug = slugify(name)
         counter = 2
-        while self.query.filter_by(slug=slug).first() is not None:
+        while self.query.filter_by(slug=slug).first() is not None and self.query.filter_by(slug=slug).first().id != self.id:
             slug = slugify(name) + "-" + str(counter)
             counter = counter + 1
         self.name = name

@@ -1,6 +1,9 @@
 from flask import Blueprint
 
-stories = Blueprint('stories', __name__)
+editor = Blueprint('editor', __name__)
 
 from .views import edit
+
+player = Blueprint('player', __name__)
+
 from .views import play

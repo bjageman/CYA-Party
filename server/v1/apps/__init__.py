@@ -23,7 +23,8 @@ socketio = SocketIO(app, async_mode=async_mode)
 
 from .admin import admin
 from .users import users
-from .stories import stories
+from .stories import player
+from .stories import editor
 
 from v1.apps.users.utils import authenticate, identity
 
@@ -32,7 +33,8 @@ jwt = JWT(app, authenticate, identity)
 base_url = "/api/v1/"
 app.register_blueprint(admin, url_prefix= base_url + 'admin')
 app.register_blueprint(users, url_prefix= base_url + 'users')
-app.register_blueprint(stories, url_prefix= base_url + 'stories')
+app.register_blueprint(editor, url_prefix= base_url + 'editor')
+app.register_blueprint(player, url_prefix= base_url + 'play')
 
 @app.after_request
 def add_headers(response):

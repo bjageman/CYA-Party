@@ -6,6 +6,17 @@ export const getStorySuccess = createAction('Successfully recieved story data')
 export const getStories = createAction('Request a list of objects')
 export const getStoriesSuccess = createAction('Successfully recieved a list of objects')
 
+//Play Actions
+export const socketStart = createAction('Start a WebSocket')
+export const socketStop = createAction('Disconnect from WebSocket')
+
+//Game Sessions
+export const createSession = createAction('Create a session for the game')
+export const joinSession = createAction('Join a session')
+export const quitSession = createAction('Quit a session')
+export const getSessionSuccess = createAction('Successfully received session data')
+export const getSessions = createAction('Request a list of available games')
+export const getSessionsSuccess = createAction('Successfully received list of available games')
 
 //Editor Options
 export const getTools = createAction('Request a set of available tools for the editor')

@@ -4,7 +4,7 @@ import { createReducer } from 'redux-act'
 import * as actions from './actions'
 
 import { user } from 'user/redux/reducers'
-import { editor } from 'adventure/redux/reducers'
+import { editor, session } from 'adventure/redux/reducers'
 
 import { routerReducer as router } from 'react-router-redux'
 
@@ -29,5 +29,5 @@ export const response = createReducer({
 
 
 export default combineReducers(
-  { response, user, router, editor }
+  { response, user, router, editor, session }
 )

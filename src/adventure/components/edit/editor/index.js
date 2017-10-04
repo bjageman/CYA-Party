@@ -17,6 +17,7 @@ class EditorRouter extends React.Component {
             this.props.getStory({
                 access_token: this.props.user.access_token,
                 story_id: story_id,
+                edit: true,
             })
         }
         this.props.getTools({
@@ -41,11 +42,11 @@ class EditorRouter extends React.Component {
                     <Button style={{ backgroundColor:"blue" }} float onClick={() => this.saveStory()}><Icon name="save" /></Button>
                     <ReduxLink to="/story/edit"><Button>BACK</Button></ReduxLink>
                 </Container>
-            <Switch>
-                <Route exact path={match.url} component={Story}/>
-                <Route exact path={match.url + "/pages"} component={Pages}/>
-                <Route path={match.url + "/pages/:page_id"} component={Pages}/>
-            </Switch>
+                <Switch>
+                    <Route exact path={match.url} component={Story}/>
+                    <Route exact path={match.url + "/pages"} component={Pages}/>
+                    <Route path={match.url + "/pages/:page_id"} component={Pages}/>
+                </Switch>
         </div>
         )
     }

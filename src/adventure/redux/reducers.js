@@ -23,10 +23,19 @@ const initial = {
           choice: {}},
       listing: [],
       fetching: false,
-  }
+  },
+  session: { }
 }
 
-
+export const session = createReducer({
+    [actions.getSessionSuccess]: (state, payload) => {
+        return payload.session
+    },
+    [actions.getSessionsSuccess]: (state, payload) => {
+        console.log(payload)
+        return { ...state, listing: payload.listing }
+    }
+}, initial.session)
 
 export const editor = createReducer({
     [actions.getToolsSuccess]: (state, payload) => {

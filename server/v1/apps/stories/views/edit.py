@@ -1,7 +1,7 @@
 from flask import request, jsonify, abort
 from flask_jwt import jwt_required, current_identity
 #App Specific
-from v1.apps.stories import stories
+from v1.apps.stories import editor
 from v1.apps.stories.models import Story, Page, Choice, Action
 from v1.apps.stories.parsers import *
 from v1.apps.stories.errors import *
@@ -18,7 +18,7 @@ from v1.apps.utils import *
 # Editor Tools
 ##
 
-@stories.route('/tools', methods=['GET'])
+@editor.route('/tools', methods=['GET'])
 @jwt_required()
 def get_tools():
     commands = Command.query.all()
@@ -28,13 +28,13 @@ def get_tools():
 #  Stories
 ##
 
-@stories.route('', methods=['GET'])
+@editor.route('', methods=['GET'])
 @jwt_required()
-def get_stories():
+def get_owner_stories():
     stories = Story.query.filter_by(owner=current_identity)
     return jsonify({"listing": parse_stories(stories)})
 
-@stories.route('/<story_id>', methods=['GET'])
+@editor.route('/<story_id>', methods=['GET'])
 @jwt_required()
 def get_story_request(story_id):
     story = get_story(story_id)
@@ -43,7 +43,7 @@ def get_story_request(story_id):
     else:
         abort(401)
 
-@stories.route('', methods=['POST', 'PUT'])
+@editor.route('', methods=['POST', 'PUT'])
 @jwt_required()
 def create_story_request():
     data = request.get_json()
@@ -56,7 +56,7 @@ def create_story_request():
     db.session.commit()
     return jsonify({"story": parse_story(story) })
 
-@stories.route('/<story_id>', methods=['POST', 'PUT'])
+@editor.route('/<story_id>', methods=['POST', 'PUT'])
 @jwt_required()
 def update_story_request(story_id):
     story = get_story(story_id)
@@ -69,7 +69,7 @@ def update_story_request(story_id):
     db.session.commit()
     return jsonify({"story": parse_story(story)})
 
-@stories.route('/<story_id>', methods=['DELETE'])
+@editor.route('/<story_id>', methods=['DELETE'])
 @jwt_required()
 def delete_story(story_id):
     print(story_id)
@@ -88,18 +88,18 @@ def delete_story(story_id):
 
 url_base_items = "/<story_id>/items"
 
-@stories.route(url_base_items, methods=['GET'])
+@editor.route(url_base_items, methods=['GET'])
 def get_items(story_id):
     story = get_story(story_id)
     return jsonify({"listing": parse_items(story.items)})
 
-@stories.route(url_base_items + '/<item_id>', methods=['GET'])
+@editor.route(url_base_items + '/<item_id>', methods=['GET'])
 def get_item_request(story_id, item_id):
     item = get_item(item_id, story_id)
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_items, methods=['POST', 'PUT'])
+@editor.route(url_base_items, methods=['POST', 'PUT'])
 @jwt_required()
 def create_item(story_id):
     story = get_story(story_id)
@@ -112,7 +112,7 @@ def create_item(story_id):
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_items + '/<item_id>', methods=['POST', 'PUT'])
+@editor.route(url_base_items + '/<item_id>', methods=['POST', 'PUT'])
 @jwt_required()
 def update_item(story_id, item_id):
     item = get_item(item_id, story_id)
@@ -125,7 +125,7 @@ def update_item(story_id, item_id):
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_items + '/<item_id>', methods=['DELETE'])
+@editor.route(url_base_items + '/<item_id>', methods=['DELETE'])
 @jwt_required()
 def delete_item(story_id, item_id):
     item = get_item(item_id, story_id)
@@ -145,18 +145,18 @@ def delete_item(story_id, item_id):
 
 url_base_pages = "/<story_id>/pages"
 
-@stories.route(url_base_pages, methods=['GET'])
+@editor.route(url_base_pages, methods=['GET'])
 def get_pages(story_id):
     story = get_story(story_id)
     return jsonify({"listing": parse_pages(story.pages)})
 
-@stories.route(url_base_pages + '/<page_id>', methods=['GET'])
+@editor.route(url_base_pages + '/<page_id>', methods=['GET'])
 def get_page_request(story_id, page_id):
     page = get_page(page_id, story_id)
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_pages, methods=['POST', 'PUT'])
+@editor.route(url_base_pages, methods=['POST', 'PUT'])
 @jwt_required()
 def create_page_request(story_id):
     story = get_story(story_id)
@@ -167,7 +167,7 @@ def create_page_request(story_id):
     create_page(story, name, description, choices)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_pages + '/<page_id>', methods=['POST', 'PUT'])
+@editor.route(url_base_pages + '/<page_id>', methods=['POST', 'PUT'])
 @jwt_required()
 def update_page_request(story_id, page_id):
     page = get_page(page_id, story_id)
@@ -178,7 +178,7 @@ def update_page_request(story_id, page_id):
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_pages + '/<page_id>', methods=['DELETE'])
+@editor.route(url_base_pages + '/<page_id>', methods=['DELETE'])
 @jwt_required()
 def delete_page_request(story_id, page_id):
     page = get_page(page_id, story_id)
@@ -197,19 +197,19 @@ def delete_page_request(story_id, page_id):
 
 url_base_choices = url_base_pages + "/<page_id>/choices"
 
-@stories.route(url_base_choices, methods=['GET'])
+@editor.route(url_base_choices, methods=['GET'])
 def get_choices(story_id, page_id):
     page = get_page(page_id, story_id)
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_choices + '/<choice_id>', methods=['GET'])
+@editor.route(url_base_choices + '/<choice_id>', methods=['GET'])
 def get_choice_request(story_id, page_id, choice_id):
     choice = get_choice(choice_id, page_id, story_id)
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_choices, methods=['POST', 'PUT'])
+@editor.route(url_base_choices, methods=['POST', 'PUT'])
 def create_choice_request(story_id, page_id):
     page = get_page(page_id, story_id)
     data = request.get_json()
@@ -222,7 +222,7 @@ def create_choice_request(story_id, page_id):
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_choices + '/<choice_id>', methods=['POST', 'PUT'])
+@editor.route(url_base_choices + '/<choice_id>', methods=['POST', 'PUT'])
 @jwt_required()
 def update_choice_request(story_id, page_id, choice_id):
     choice = get_choice(choice_id, page_id, story_id)
@@ -234,7 +234,7 @@ def update_choice_request(story_id, page_id, choice_id):
     return jsonify({"story": parse_story(story) })
 
 
-@stories.route(url_base_choices + '/<choice_id>', methods=['DELETE'])
+@editor.route(url_base_choices + '/<choice_id>', methods=['DELETE'])
 @jwt_required()
 def delete_choice(story_id, page_id, choice_id):
     choice = get_choice(choice_id, page_id, story_id)
@@ -254,13 +254,13 @@ def delete_choice(story_id, page_id, choice_id):
 
 url_base_actions = url_base_choices + "/<choice_id>/actions"
 
-@stories.route(url_base_actions, methods=['GET'])
+@editor.route(url_base_actions, methods=['GET'])
 def get_actions(story_id, page_id, choice_id):
     choice = get_choice(choice_id, page_id, story_id)
     story = get_story(story_id)
     return jsonify({"story": parse_story(story) })
 
-@stories.route(url_base_actions, methods=['POST', 'PUT'])
+@editor.route(url_base_actions, methods=['POST', 'PUT'])
 def create_action_request(story_id, page_id, choice_id):
     choice = get_choice(choice_id, page_id, story_id)
     data = request.get_json()

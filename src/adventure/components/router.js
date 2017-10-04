@@ -3,9 +3,10 @@ import React from 'react'
 import { Route, Switch } from 'react-router'
 
 import Home from './index'
-import Play from './play/'
 import Edit from './edit/'
 import Editor from './edit/editor/'
+
+import PlayRouter from './play/router'
 
 import Security from 'base/components/Security'
 
@@ -15,7 +16,7 @@ const StoryRouter = ({ match }) => (
         <Route exact path={match.url} component={Home}/>
         <Route exact path={match.url + "/edit"} component={Edit}/>
         <Route path={match.url + "/edit/:story_id"} component={Editor}/>
-        <Route path={match.url + "/play"} component={Play}/>
+        <Route path={match.url + "/play"} component={PlayRouter}/>
     </Switch>
     </Security>
 )

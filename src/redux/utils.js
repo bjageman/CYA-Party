@@ -8,6 +8,7 @@ export function mapStateToProps(state) {
     response: state.response,
     router: state.router,
     editor: state.editor,
+    session: state.session,
   }
   return props
 }

@@ -3,20 +3,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Button, Grid, GridItem, Text } from 'bjageman-react-toolkit'
+import { Grid, GridItem, Text } from 'bjageman-react-toolkit'
 import ReduxLink from 'base/components/links/Redux'
-import Delete from './delete'
 
 class StoryListItem extends React.Component {
     render() {
         const story = this.props.story
         return(
+            <ReduxLink to={"/story/play/host/" + story.slug }>
             <div style={styles.container}>
                 <Text h1> {story.name} </Text>
                 <Text p> {story.description} </Text>
-                <ReduxLink to={"/story/edit/" + story.id }><Button raised>Edit</Button></ReduxLink>
-                <Delete story_id={story.id} type="story" >Delete</Delete>
             </div>
+            </ReduxLink>
         )
     }
 }
@@ -35,7 +34,6 @@ class StoryList extends React.Component {
         super(props)
         this.props.getStories({
             access_token: this.props.user.access_token,
-            edit: true,
         })
     }
 

@@ -15,7 +15,8 @@
     "redux-act": "^1.4.1",
     "redux-logger": "^3.0.6",
     "redux-persist": "^4.9.1",
-    "redux-saga": "^0.15.6"
+    "redux-saga": "^0.15.6",
+    "socket.io-client": "^2.0.3"
   },
   "devDependencies": {
     "react-scripts": "1.0.13"

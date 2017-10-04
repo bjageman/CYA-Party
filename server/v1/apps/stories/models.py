@@ -12,6 +12,7 @@ class Story(Base, TimestampMixin):
     image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
     image = db.relationship("Image")
     pages = db.relationship('Page', cascade="all,delete", backref='story')
+    public = db.Column(db.Boolean, default=True)
 
 class Page(Base, TimestampMixin):
     start = db.Column(db.Boolean,default=False)

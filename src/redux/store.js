@@ -31,5 +31,5 @@ function configureStore(initialState){
 }
 
 const store = configureStore()
-persistStore(store, {whitelist: ['user', 'adventure']})
+persistStore(store, {whitelist: ['user', 'session']})
 export default store

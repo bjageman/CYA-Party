@@ -7,7 +7,8 @@ class Story extends React.Component {
     return (
         <Container>
             <ReduxLink to="/story/edit"><Button raised>Go to Editor</Button></ReduxLink>
-            <ReduxLink to="/story/play"><Button raised>Play a Game</Button></ReduxLink>
+            <ReduxLink to="/story/play/host"><Button raised>Host a Game</Button></ReduxLink>
+            <ReduxLink to="/story/play/join"><Button raised>Join a Game</Button></ReduxLink>
         </Container>
     )
   }

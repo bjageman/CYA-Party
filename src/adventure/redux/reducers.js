@@ -31,6 +31,19 @@ export const session = createReducer({
     [actions.getSessionSuccess]: (state, payload) => {
         return payload.session
     },
+    [actions.getPageSuccess]: (state, payload) => {
+        return { ...state, page: payload.page }
+    },
+    [actions.voteChoiceSuccess]: (state, payload) => {
+        return {
+            ...state,
+            page: {
+                ...state.page,
+                votes: payload.votes,
+                result: payload.result,
+            }
+        }
+    },
     [actions.getSessionsSuccess]: (state, payload) => {
         console.log(payload)
         return { ...state, listing: payload.listing }

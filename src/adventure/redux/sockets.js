@@ -43,6 +43,8 @@ function* outgoingDataHandler(socket) {
     try{
         yield fork(createSessionEmit, socket)
         yield fork(joinSessionEmit, socket)
+        yield fork(startSessionEmit, socket)
+        yield fork(voteChoiceEmit, socket)
     }catch(err){
         console.log("readSockets ERROR: " + err.message)
     }
@@ -52,7 +54,6 @@ function* createSessionEmit(socket) {
     while (true) {
         const { payload } = yield take(actions.createSession)
         socket.emit('create_session', payload)
-        console.log("WTF IS HAPPENING")
     }
 }
 
@@ -60,9 +61,24 @@ export function* joinSessionEmit(socket) {
   while (true) {
     const { payload } = yield take(actions.joinSession)
     socket.emit('join_session', payload)
-    console.log("JOIN")
   }
 }
+
+export function* startSessionEmit(socket) {
+  while (true) {
+    const { payload } = yield take(actions.startSession)
+    socket.emit('start_session', payload)
+  }
+}
+
+export function* voteChoiceEmit(socket) {
+  while (true) {
+    const { payload } = yield take(actions.voteChoice)
+    socket.emit('vote_choice', payload)
+  }
+}
+
+
 
 function watchMessages(socket) {
   return eventChannel((emit) => {
@@ -71,14 +87,23 @@ function watchMessages(socket) {
 
     }
     socket.on('create_session_success', ({ session }) => {
-        console.log("SESSION CREATED", session.id, session.name)
         emit(actions.getSessionSuccess({ session: session }))
         emit(push("/story/play/lobby"))
     })
     socket.on('join_session_success', ({ session }) => {
-        console.log("SESSION CREATED", session.id, session.name)
         emit(actions.getSessionSuccess({ session: session }))
         emit(push("/story/play/lobby"))
+    })
+    socket.on('start_session_success', ({ page }) => {
+        emit(actions.getPageSuccess({ page: page }))
+        emit(push("/story/play/game"))
+    })
+    socket.on('vote_choice_success', ({ votes, result }) => {
+        emit(actions.voteChoiceSuccess({ votes: votes, result: result }))
+    })
+    socket.on('session_deactivated', ( ) => {
+        emit(push("/story/play/join"))
+        alert("This game was deactivated")
     })
     return () => {
       socket.close();

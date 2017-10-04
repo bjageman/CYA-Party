@@ -14,10 +14,11 @@ from v1.apps.stories.parsers import *
 from v1.apps.stories.utils import *
 
 @player.route('/sessions', methods=['GET'])
-def get_sessions():
-    sessions = Session.query.filter_by(closed=False)
+def get_open_sessions():
+    sessions = Session.query.filter_by(closed=False).filter_by(active=False)
+    for i in sessions:
+        print(i.id, i.active)
     return jsonify({"listing": parse_sessions(sessions)})
-
 
 @player.route('/stories', methods=['GET'])
 def get_owner_stories():
@@ -38,54 +39,87 @@ def test_connect():
 def test_disconnect():
     print('Client Disconnected...')
 
-@socketio.on('create_session')
-def create_session(data):
-    story_id = get_required_data(data, "story_id")
-    story = get_story(story_id)
-    auth_token = get_required_data(data, "access_token")
+def create_session(story, host):
+    name = story.slug + "-session"
+    host_player = Player(user=host)
+    existing_sessions = Session.query.filter_by(host=host).filter_by(closed=False)
+    for existing_session in existing_sessions:
+        existing_session.closed = True
+        existing_session.active = False
+        db.session.add(existing_session)
+        db.session.commit()
+        print("deactivate",existing_session.id)
+        emit('session_deactivated', { }, room=existing_session.id)
+    session = Session(name=name, host=host, story=story, closed=False, active=False)
+    session.players.append(host_player)
+    return session
+
+def add_new_player(session, user):
+    user_exists = False
+    user_count = (player for player in session.players if player.user == user)
+    for i in user_count:
+        user_exists = True
+    if not user_exists:
+        player = Player(user=user)
+        session.players.append(player)
+    return session
+
+def get_user_by_auth(auth_token):
     user_id = decode_auth_token(auth_token)
     user = User.query.get(user_id)
-    player = Player(user=user)
-    name = story.slug + "_session"
-    session = Session(name=name, story=story, closed=False, active=False)
-    session.players.append(player)
+    return user
+
+@socketio.on('create_session')
+def create_session_request(data):
+    story_id = get_required_data(data, "story_id")
+    auth_token = get_required_data(data, "access_token")
+    story = get_story(story_id)
+    host = get_user_by_auth(auth_token)
+    session = create_session(story, host)
     db.session.add(session)
     db.session.commit()
-    print("SESSION MADE", session)
     join_room(session.id)
     emit('create_session_success', {
         "session": parse_session(session)
     }, room=session.id)
 
-@socketio.on('join_session', namespace='/stories')
+
+@socketio.on('join_session')
 def join_session(data):
-    session = Session.query.get(data['session_id'])
-    user = User.query.get(data['user_id'])
-    join_room(session.id)
-    player = Player(user=user)
-    session.players.append(player)
+    session_id = get_required_data(data, "session_id")
+    auth_token = get_required_data(data, "access_token")
+    session = Session.query.get(session_id)
+    user = get_user_by_auth(auth_token)
+    session = add_new_player(session, user)
     db.session.add(session)
     db.session.commit()
-    send({
+    join_room(session.id)
+    emit('join_session_success', {
         "session": parse_session(session)
     }, room=session.id)
 
-@socketio.on('start_game', namespace='/stories')
-def start_game(data):
-    session = Session.query.get(data['session_id'])
+@socketio.on('start_session')
+def start_session(data):
+    session_id = get_required_data(data, "session_id")
+    session = Session.query.get(session_id)
     session.active = True
     db.session.add(session)
     db.session.commit()
-    first_page = Page.query.filter(Page.story == session.story).filter(Page.start == True).first()
-    send({
+    session = Session.query.get(session_id)
+    first_page = Page.query.filter(Page.story == session.story).first() #.filter(Page.start == True)
+    emit('start_session_success', {
         "page": parse_page(first_page, detailed=True)
     }, room=session.id)
 
-@socketio.on('vote', namespace='/stories')
+@socketio.on('vote_choice')
 def vote(data):
-    session = Session.query.get(data['session_id'])
-    choice = Choice.query.get(data['choice_id'])
-    player = Player.query.get(data['player_id'])
+    session_id = get_required_data(data, "session_id")
+    auth_token = get_required_data(data, "access_token")
+    choice_id = get_required_data(data, "choice_id")
+    user = get_user_by_auth(auth_token)
+    session = Session.query.get(session_id)
+    player = Player.query.filter_by(user=user).first()
+    choice = Choice.query.get(choice_id)
     vote = Vote.query.filter(Vote.session == session).filter(Vote.page == choice.page).filter(Vote.player == player).first()
     if vote is not None:
         vote.choice = choice
@@ -94,11 +128,13 @@ def vote(data):
     db.session.add(vote)
     db.session.commit()
     votes = Vote.query.filter(Vote.session == session).filter(Vote.page == choice.page)
-    send({
-        "votes": vote_count(votes)
+    #Check for a vote result
+    result = None
+    vote_tally = vote_count(votes)
+    if (len(vote_tally) == len(session.players)):
+        result = max(vote_tally, key=vote_tally.get)
+        print("RESULT",result)
+    emit('vote_choice_success', {
+        "votes": vote_tally,
+        "result": result,
     }, room=session.id)
-#
-# @player.route('/socket', methods=['GET', 'POST'])
-# def test_socket():
-#     socketio.emit('request', {"message": "GET BRO"}, namespace="/stories")
-#     return jsonify({"message": "SUCCESS"})

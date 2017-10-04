@@ -106,6 +106,7 @@ def parse_session(session):
     try:
         result = parse_base(session)
         result.update({
+            "host": parse_user(session.host),
             "story": parse_story(session.story, False),
             "players": parse_players(session.players),
         })
@@ -134,16 +135,29 @@ def vote_count(votes):
     vote_set = {}
     for vote in votes:
         if vote.choice.id in vote_set:
-            vote_set[vote.choice.id] = vote_set[vote.choice.id] + 1
+            vote_set[vote.choice.id]['count'] = vote_set[vote.choice.id]['count'] + 1
+            vote_set[vote.choice.id]['voters'].append(parse_player(vote.player))
         else:
-            vote_set[vote.choice.id] = 1
+            vote_set[vote.choice.id] = {
+                'count': 1,
+                'voters': [parse_player(vote.player)]
+                }
     return(vote_set)
+
+def parse_votes(votes):
+    vote_set = []
+    for vote in votes:
+        vote_set.append(parse_vote(vote))
+    return(vote_set)
+
 
 def parse_vote(vote):
     try:
         result = {}
         result.update({
-            "choice_id": vote.choice.id,
+            "voter": parse_player(vote.player),
+            "page": parse_page(vote.page),
+            "choice": parse_choice(vote.choice),
         })
         return result
     except AttributeError as e:

@@ -13,8 +13,13 @@ export const socketStop = createAction('Disconnect from WebSocket')
 //Game Sessions
 export const createSession = createAction('Create a session for the game')
 export const joinSession = createAction('Join a session')
+export const startSession = createAction('Start a session')
 export const quitSession = createAction('Quit a session')
+export const voteChoice = createAction('Vote on a specific choice')
+export const voteChoiceSuccess = createAction('Successfully voted on a specific choice')
+
 export const getSessionSuccess = createAction('Successfully received session data')
+export const getPageSuccess = createAction('Successfully received page data')
 export const getSessions = createAction('Request a list of available games')
 export const getSessionsSuccess = createAction('Successfully received list of available games')
 

@@ -52,6 +52,8 @@ class Session(Base, TimestampMixin):
     story_id = db.Column(db.ForeignKey('story.id'))
     closed = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=False)
+    host_id = db.Column(db.ForeignKey('user.id'), index=True)
+    host = db.relationship('User', backref='sessions')
 
 player_item_table = db.Table('player_item', Base.metadata,
     db.Column('player_id', db.Integer, db.ForeignKey('player.id')),

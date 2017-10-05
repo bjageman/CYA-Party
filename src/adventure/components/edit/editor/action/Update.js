@@ -52,7 +52,6 @@ class UpdateActionForm extends React.Component {
         var commands = this.props.editor.tools ? this.props.editor.tools.commands : []
         return(
             <div>
-                <TextInput style={{width: "100%"}} onChange={this.handleInputChange} name="name" placeholder="Action Name" value={action.name} />
                 <select value={command.slug} style={styles.select} onChange={this.handleCommandChange} name="slug">
                     { commands.map((command, i ) =>
                         <option key={i} value={command.slug} >{command.name}</option>
@@ -61,7 +60,7 @@ class UpdateActionForm extends React.Component {
                 <select value={action.target} style={styles.select} onChange={this.handleInputChange} name="target">
                 { command.slug === "goto-page" ?
                     this.props.editor.story.pages.map((page, i) =>
-                        <option key={i} value={page.slug}>{page.name}</option>
+                        <option key={i} value={page.id}>{page.name}</option>
                     )
                 : <option></option> }
                 </select>

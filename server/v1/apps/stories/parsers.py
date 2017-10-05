@@ -75,6 +75,8 @@ def parse_action(action):
         result.update({
             "command": parse_command(action.command),
             "target": action.target,
+            "page": parse_page(action.page, False),
+            "item": parse_item(action.item, False),
         })
         return result
     except AttributeError as e:
@@ -86,7 +88,7 @@ def parse_items(items):
         item_set.append(parse_item(item))
     return(item_set)
 
-def parse_item(item):
+def parse_item(item, detailed=False):
     try:
         result = parse_base(item)
         result.update({
@@ -130,6 +132,25 @@ def parse_player(player):
         return result
     except AttributeError as e:
         return None
+
+def choice_vote_count(page, votes):
+    choice_set = []
+    vote_max = 0
+    winner = []
+    for choice in page.choices:
+        vote_count = 0
+        for vote in votes:
+            if vote.choice == choice:
+                vote_count = vote_count + 1
+        result = parse_choice(choice)
+        result.update({ 'votes': vote_count })
+        choice_set.append(result)
+        if vote_count == vote_max:
+            winner.append(choice)
+        if vote_count > vote_max:
+            vote_max = vote_count
+            winner = [choice]
+    return choice_set, winner
 
 def vote_count(votes):
     vote_set = {}

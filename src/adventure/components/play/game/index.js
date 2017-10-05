@@ -16,6 +16,8 @@ class Game extends React.Component {
                 { page ?
                     <div>
                         <Text h1>{page.name}</Text>
+                        { page.winner ? <Text p> {page.winner.name} </Text> : null }
+                        <Text p>{page.description}</Text>
                         <List>
                         {page.choices.map((choice, i) =>
                             <ChoiceItem key={i} choice={choice}/>

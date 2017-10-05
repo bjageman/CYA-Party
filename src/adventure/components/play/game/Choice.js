@@ -16,14 +16,10 @@ class ChoiceItem extends React.Component {
 
     render() {
         const choice = this.props.choice
-        const page =  this.props.session.page
-        const vote =  page.votes ? page.votes[choice.id] : null
-        const winner = choice.id === page.result
         return(
             <ListItem>
                 <Button onClick={this.joinSession}>{choice.name}</Button>
-                {vote ? vote.count : 0}
-                {winner ? "WINNER": null}
+                {choice.votes}
             </ListItem>
         )
     }

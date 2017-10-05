@@ -45,13 +45,12 @@ def get_story_request(story_id):
 
 @editor.route('', methods=['POST', 'PUT'])
 @jwt_required()
-def create_story_request():
+def save_story_request():
     data = request.get_json()
     name = get_required_data(data, "name")
     description = get_optional_data(data, "description")
     pages = get_optional_data(data, "pages")
     story = create_story(name, current_identity, description, pages)
-    print(story)
     db.session.add(story)
     db.session.commit()
     return jsonify({"story": parse_story(story) })
@@ -72,7 +71,6 @@ def update_story_request(story_id):
 @editor.route('/<story_id>', methods=['DELETE'])
 @jwt_required()
 def delete_story(story_id):
-    print(story_id)
     story = get_story(story_id)
     slug = story.slug
     db.session.delete(story)

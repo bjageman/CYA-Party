@@ -20,14 +20,18 @@ def get_story(story_id, required=True):
     story = get_model(Story, story_id)
     if story is None:
         if required is True:
-            abort(404, {'message': 'Story not found'})
+            print("Story", story_id, "Not found")
+            return None
+            # abort(404, {'message': 'Story not found'})
         return None
     return story
 
 def get_item(item_id, story_id=None):
     item = get_model(Item, item_id)
     if item is None:
-        abort(404, {'message': 'Item not found'})
+        print("Item", item_id, "Not found")
+        return None
+        # abort(404, {'message': 'Item not found'})
     if story_id is not None:
         story = get_story(story_id)
         if story.id != item.story.id:
@@ -38,7 +42,9 @@ def get_item(item_id, story_id=None):
 def get_page(page_id, story_id=None):
     page = get_model(Page, page_id)
     if page is None:
-        abort(404, {'message': 'Page not found'})
+        print("Page", page_id, "Not found")
+        return None
+        # abort(404, {'message': 'Page not found'})
     if story_id is not None:
         story = get_story(story_id)
         if story.id != page.story.id:
@@ -48,7 +54,9 @@ def get_page(page_id, story_id=None):
 def get_choice(choice_id=None, page_id=None, story_id=None):
     choice = get_model(Choice, choice_id)
     if choice is None:
-        abort(404, {'message': 'Choice not found'})
+        print("Choice", choice_id, "Not found")
+        return None
+        # abort(404, {'message': 'Choice not found'})
     if page_id is not None:
         page = get_page(page_id)
         if page.id != choice.page.id:
@@ -62,7 +70,8 @@ def get_choice(choice_id=None, page_id=None, story_id=None):
 def get_action(action_id, choice_id=None, page_id=None, story_id=None):
     action = get_model(Action, action_id)
     if action is None:
-        abort(404, {'message': 'Action not found'})
+        return None
+        # abort(404, {'message': 'Action not found'})
     if choice_id is not None:
         choice = get_choice(choice_id)
         if choice.id != action.choice.id:
@@ -109,10 +118,18 @@ def create_choice(name, actions = []):
     return choice
 
 def create_action(name, command=None, target=None):
+    page = None
+    item = None
     if command is not None:
         slug = get_required_data(command, "slug")
         command = get_command(slug)
-    action = Action(name=name, command=command, target=target)
+        if command.target == "PAGE":
+            page = get_page(target)
+            target = page.id
+        if command.target == "ITEM":
+            item = get_item(target)
+            target = item.id
+    action = Action(name=name, command=command, target=target, page=page, item=item)
     return action
 
 
@@ -148,15 +165,27 @@ def update_choice(choice, name, actions=None):
     return choice
 
 def update_action(action, name, command=None, target=None):
-    print(action.name, name, command, target)
     if name is not None:
         action.set_name(name)
     if command is not None:
         slug = get_required_data(command, "slug")
         command = get_command(slug)
         action.command = command
-    if target is not None:
-        action.target = target
+        try:
+            if command.target == "PAGE":
+                page = get_page(target)
+                action.page = get_page(target)
+                action.target = page.id
+            elif command.target == "ITEM":
+                item = get_item(target)
+                action.item = item
+                action.target = item.id
+            else:
+                action.target = target
+        except (NameError, AttributeError):
+            action.target = None
+            action.page = None
+            action.item = None
     db.session.add(action)
     db.session.commit()
     return action

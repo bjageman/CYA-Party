@@ -111,30 +111,51 @@ def start_session(data):
         "page": parse_page(first_page, detailed=True)
     }, room=session.id)
 
-@socketio.on('vote_choice')
-def vote(data):
-    session_id = get_required_data(data, "session_id")
-    auth_token = get_required_data(data, "access_token")
-    choice_id = get_required_data(data, "choice_id")
-    user = get_user_by_auth(auth_token)
-    session = Session.query.get(session_id)
-    player = Player.query.filter_by(user=user).first()
-    choice = Choice.query.get(choice_id)
-    vote = Vote.query.filter(Vote.session == session).filter(Vote.page == choice.page).filter(Vote.player == player).first()
+#Create or update a vote for a specific player on that specific page
+def create_vote(session, page, choice, player):
+    vote = Vote.query.filter(Vote.session == session).filter(Vote.page == page).filter(Vote.player == player).first()
     if vote is not None:
         vote.choice = choice
     else:
-        vote = Vote(session=session, choice=choice, player=player, page=choice.page)
+        vote = Vote(session=session, choice=choice, player=player, page=page)
+    return vote
+
+#Get all votes from this session's page
+def tally_page_votes(session, page):
+    return Vote.query.filter(Vote.session == session).filter(Vote.page == page)
+
+@socketio.on('vote_choice')
+def vote_choice(data):
+    session_id = get_required_data(data, "session_id")
+    auth_token = get_required_data(data, "access_token")
+    choice_id  = get_required_data(data, "choice_id")
+    choice = Choice.query.get(choice_id)
+    page = choice.page
+    user = get_user_by_auth(auth_token)
+    session = Session.query.get(session_id)
+    player = Player.query.filter_by(user=user).first()
+    vote = create_vote(session, page, choice, player)
     db.session.add(vote)
     db.session.commit()
-    votes = Vote.query.filter(Vote.session == session).filter(Vote.page == choice.page)
-    #Check for a vote result
-    result = None
-    vote_tally = vote_count(votes)
-    if (len(vote_tally) == len(session.players)):
-        result = max(vote_tally, key=vote_tally.get)
-        print("RESULT",result)
+    votes = tally_page_votes(session, page)
+    choices, result = choice_vote_count(page, votes)
+    winner = None
     emit('vote_choice_success', {
-        "votes": vote_tally,
-        "result": result,
+        "choices": choices,
     }, room=session.id)
+    if len(votes.all()) == len(session.players):
+        if len(result) == 1:
+            winner = result[0]
+            for action in winner.actions:
+                execute_action(action, session.id)
+
+def execute_action(action, room=None):
+    command = action.command
+    if command.slug == 'goto-page':
+        page = action.page
+        if action.page is not None:
+            emit('go_to_page', {
+                "page": parse_page(page, detailed=True)
+            }, room=room)
+            return True
+    return False

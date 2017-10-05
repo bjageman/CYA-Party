@@ -35,7 +35,6 @@ class UpdateChoiceForm extends React.Component {
         return(
             <div>
                 <TextInput style={{width: "100%"}} onChange={this.handleInputChange} name="name" placeholder="Choice Name" value={choice.name} />
-                <TextArea onChange={this.handleInputChange} name="description" placeholder="Description..." value={choice.description} />
                 <Button onClick={this.handleDelete}>Delete Choice</Button>
                 <ActionCreate page={page} choice={choice} />
                 { choice.actions.map((action, i) =>

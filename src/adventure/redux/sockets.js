@@ -98,8 +98,11 @@ function watchMessages(socket) {
         emit(actions.getPageSuccess({ page: page }))
         emit(push("/story/play/game"))
     })
-    socket.on('vote_choice_success', ({ votes, result }) => {
-        emit(actions.voteChoiceSuccess({ votes: votes, result: result }))
+    socket.on('vote_choice_success', ({ choices, winner }) => {
+        emit(actions.voteChoiceSuccess({ choices: choices, winner: winner }))
+    })
+    socket.on('go_to_page', ({ page }) => {
+        emit(actions.getPageSuccess({ page: page }))
     })
     socket.on('session_deactivated', ( ) => {
         emit(push("/story/play/join"))

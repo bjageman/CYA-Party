@@ -15,11 +15,16 @@ class JoinItem extends React.Component {
 
     render() {
         const item = this.props.item
+        const story = item.story || null
         return(
             <ListItem>
-                <Button onClick={this.joinSession}>
-                {item.story.name} - Players: {item.players.length}
-                </Button>
+            { item && story ?
+                <div>
+                    <Button onClick={this.joinSession}>
+                    {item.story.name} - Players: {item.players.length}
+                    </Button>
+                </div>
+            : null }
             </ListItem>
         )
     }

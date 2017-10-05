@@ -14,7 +14,7 @@ def get_model(object, id):
     try:
         id = int(id)
         return object.query.filter(object.id == id).first()
-    except ValueError:
+    except (ValueError, TypeError):
         return object.query.filter(object.slug == id).first()
 
 def check_for_invalid_data(data, value):

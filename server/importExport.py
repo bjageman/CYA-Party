@@ -20,10 +20,15 @@ def setKeyLink(key, data_type, original_id, new_id):
 
 
 def importStoriesData(data, db=db):
+    if isinstance(data, (dict)):
+        data = [data]
     for story in data:
         story_key = { "pages": {}, "items": {}} #Ensures that links to items and pages are dynamically set
         owner = User.query.filter_by(name=story['owner']['name']).first()
-        image = Image(url = story['image']['url'])
+        try:
+            image = Image(url = story['image']['url'])
+        except TypeError:
+            image = None
         story_model = Story(
                         name=story['name'],
                         description=get_optional_data(story, "description"),
@@ -53,28 +58,34 @@ def importStoriesData(data, db=db):
                     required_item = story_key['items'][choice['required_item']]
                 choice_model = Choice(page=page_model, name=choice['name'], required_item=required_item)
                 for action in choice['actions']:
-                    command = Command.query.filter_by(name=action['type']).first()
+                    command = Command.query.filter_by(slug=action['command']['slug']).first()
                     if command is not None:
-                        target = None
-                        target_item = None
-                        target_page = None
-                        if 'GOTO_PAGE' in command.name:
-                            target_page = Page.query.get(story_key['pages'][action['target']])
-                        elif 'GIVE_ITEM' in command.name or 'TAKE_ITEM' in command.name:
-                            target_item = Item.query.get(story_key['items'][action['target']])
-                        else:
-                            target = action['target']
-                        action_model = Action(name=action['name'], type=command, target=target, item=target_item, page=target_page)
-                        choice_model.actions.append(action_model)
+                        try:
+                            target = int(action['target'])
+                            target_item = None
+                            target_page = None
+                            if 'goto-page' in command.slug:
+                                target = story_key['pages'][target]
+                                target_page = Page.query.get(target)
+                            elif 'give-item' in command.slug or 'take-item' in command.slug:
+                                target = story_key['items'][target]
+                                target_item = Item.query.get(story_key['items'][target])
+                            action_model = Action(name=action['name'], command=command, target=target, item=target_item, page=target_page)
+                            choice_model.actions.append(action_model)
+                        except TypeError:
+                            print("Target FAIL")
                 db.session.add(choice_model)
             db.session.add(page_model)
         db.session.add(story_model)
     db.session.commit()
     print("Imported", len(data), "stories")
 
-def exportData(object, db=db):
-    return parse_stories(db.session.query(object).all(), detailed=True)
-    print(json.dumps(result, indent=4, sort_keys=True))
+def exportData(object, slug=None, db=db):
+    if slug is None:
+        result = parse_stories(db.session.query(object).all(), detailed=True)
+    else:
+        result = parse_story(db.session.query(object).filter_by(slug=slug).first(), detailed=True)
+    return result
 
 def importUserData(data, db=db):
     for user in data:

@@ -19,6 +19,7 @@ def parse_story(story, detailed=True):
                 pages.append(page.id)
         result.update({
             "description": story.description,
+            "image": parse_image(story.image),
             "pages": pages,
             "owner": parse_user(story.owner),
             "items" : parse_items(story.items),

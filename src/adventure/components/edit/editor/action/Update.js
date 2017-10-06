@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { TextInput, Button } from 'bjageman-react-toolkit'
+import { Button } from 'bjageman-react-toolkit'
 
 class UpdateActionForm extends React.Component {
     state = { command: "" }

@@ -11,7 +11,11 @@ import UpdatePage from './page/Update'
 class StoryForm extends React.Component {
     handleInputChange = (event) => {
         this.props.updateStory(
-            { story : { ...this.props.editor.story, [event.target.name]: event.target.value } }
+            { story : {
+                ...this.props.editor.story,
+                [event.target.name]: event.target.value
+            }
+        }
         )
     }
 
@@ -24,7 +28,7 @@ class StoryForm extends React.Component {
                         <hr />
                         <p>Page: {page.name} - {page.description}</p>
                         <div>
-                            Choices: {page.choices.map((choice, i) =>
+                            Choices: { page.choices.map((choice, i) =>
                                 <p key={i}>{choice.name}) {choice.description}</p>
                                 )}
                         </div>
@@ -47,10 +51,10 @@ class StoryForm extends React.Component {
                     name="description" placeholder="Description..."
                     value={editor.story.description} />
                 <h4>PAGES</h4>
-                <AddPage />
                 { editor.story.pages.map((page, i) =>
                     <UpdatePage key={i} index={i} page={page}/>
                 )}
+                <AddPage />
             </Container>
         )
     }

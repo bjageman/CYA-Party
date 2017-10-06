@@ -31,7 +31,7 @@ function getConfig() {
     };
   case "production":
     return {
-      API_URL: 'https://tabletop-manager-server.herokuapp.com',
+      API_URL: 'http://neuro.ddnsking.com:5000',
       API_VERSION: 1,
       VERSION: 'production',
       DEBUG: false,

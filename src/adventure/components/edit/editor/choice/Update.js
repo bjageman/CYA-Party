@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { TextInput, TextArea, Button } from 'bjageman-react-toolkit'
+import { TextInput, Button } from 'bjageman-react-toolkit'
 
 import ActionCreate from '../action/Create'
 import ActionUpdate from '../action/Update'

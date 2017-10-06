@@ -107,7 +107,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-t", "--type", help="The type of data to be imported or exported [users, stories, pages]")
 parser.add_argument("-i", "--import_file", help="Imports the given file")
 parser.add_argument("-e", "--export", help="Exports the given file")
-parser.parse_args()
 
 if __name__ == '__main__':
     args = parser.parse_args()
@@ -123,4 +122,5 @@ if __name__ == '__main__':
         if args.type == "command":
             importCommands(data)
     if args.export is not None:
-        print(json.dumps(exportData(Story), indent=4, sort_keys=True))
+        data = exportData(Story, slug=args.export)
+        print(json.dumps(data, indent=4, sort_keys=True))

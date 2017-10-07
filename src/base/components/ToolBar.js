@@ -7,7 +7,7 @@ import Login from 'user/components/login/index'
 import AccountMenu from 'user/components/tools/AccountMenu'
 import ReduxLink from 'base/components/links/Redux'
 
-import { Drawer, AppBar, AppBarButton} from 'bjageman-react-toolkit'
+import { AppBar, AppBarButton} from 'bjageman-react-toolkit'
 import myConfig from 'config.js'
 
 class ToolBar extends React.Component {
@@ -30,11 +30,6 @@ class ToolBar extends React.Component {
                 </ReduxLink>
                 { user.id ? <AccountMenu  /> : <Login /> }
             </AppBar>
-            <Drawer
-                open={this.state.open}
-                onClick={this.toggleDrawer}
-                onRequestClose={this.toggleDrawer} >
-            </Drawer>
             </div>
         )
     }

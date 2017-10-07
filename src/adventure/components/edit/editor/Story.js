@@ -52,7 +52,10 @@ class StoryForm extends React.Component {
                     value={editor.story.description} />
                 <h4>PAGES</h4>
                 { editor.story.pages.map((page, i) =>
-                    <UpdatePage key={i} index={i} page={page}/>
+                    <div key={i}>
+                        <hr />
+                        <UpdatePage index={i} page={page}/>
+                    </div>
                 )}
                 <AddPage />
             </Container>

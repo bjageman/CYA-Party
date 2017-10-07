@@ -9,6 +9,9 @@ import { Container, Button, Icon } from 'bjageman-react-toolkit'
 import ReduxLink from 'base/components/links/Redux'
 import Story from './Story'
 import Pages from './page/'
+import Detail from './page/Detail'
+
+import TableofContentsDrawer from './TableofContentsDrawer'
 
 class EditorRouter extends React.Component {
     componentWillMount(){
@@ -40,12 +43,13 @@ class EditorRouter extends React.Component {
             <div>
                 <Container>
                     <Button style={{ backgroundColor:"blue" }} float onClick={() => this.saveStory()}><Icon name="save" /></Button>
-                    <ReduxLink to="/story/edit"><Button>BACK</Button></ReduxLink>
+                    <ReduxLink to=".."><Button>BACK</Button></ReduxLink>
+                    <TableofContentsDrawer />
                 </Container>
                 <Switch>
                     <Route exact path={match.url} component={Story}/>
                     <Route exact path={match.url + "/pages"} component={Pages}/>
-                    <Route path={match.url + "/pages/:page_id"} component={Pages}/>
+                    <Route path={match.url + "/pages/:page_index"} component={Detail}/>
                 </Switch>
         </div>
         )

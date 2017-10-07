@@ -3,25 +3,38 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Container } from 'bjageman-react-toolkit'
+import { Container, Checkbox } from 'bjageman-react-toolkit'
 
 import { Button } from 'bjageman-react-toolkit'
 
 class HostSettings extends React.Component {
-    handleClick = () => {
-        console.log("HANDLE CLICK")
+    state = {
+        private: false,
+    }
+
+    handleInputChange = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleCreateGame = () => {
         this.props.createSession({
             access_token: this.props.user.access_token,
             story_id: this.props.match.params.story_id,
+            private: this.state.private,
         })
     }
 
     render() {
         return (
-            <Container>
+            <Container center>
                 <h1>Settings</h1>
-                {this.props.match.params.story_id}
-                <Button raised onClick={this.handleClick}>Create Game</Button>
+                <Checkbox name="private" onClick={this.handleInputChange} value={this.state.private} label="Private Game" />
+                <Button raised onClick={this.handleCreateGame}>Create Game</Button>
             </Container>
         )
     }

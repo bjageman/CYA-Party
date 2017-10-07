@@ -10,9 +10,10 @@ import  store  from 'redux/store'
 
 class ReduxLink extends React.Component {
     render(){
+        var style = this.props.style ? { ...styles.link, ...this.props.style } : styles.link
         var to = this.props.to
         return(
-        <a style={styles.link} onClick={ () => store.dispatch(push(to)) }>{this.props.children}</a>
+        <a style={style} onClick={ () => store.dispatch(push(to)) }>{this.props.children}</a>
         )
     }
 }

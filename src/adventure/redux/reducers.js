@@ -64,7 +64,7 @@ export const editor = createReducer({
         return { ...state, story: payload.story }
     },
     [actions.updatePage]: (state, payload) => {
-        return {
+        var result = {
             ...state,
             story: {
                 ...state.story,
@@ -72,6 +72,7 @@ export const editor = createReducer({
             },
             page: state.page
         }
+        return result
     },
     [actions.addPage]: (state, payload) => {
         return {

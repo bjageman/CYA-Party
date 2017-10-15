@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Button } from 'bjageman-react-toolkit'
+import { Button, Icon } from 'bjageman-react-toolkit'
 
 class UpdateActionForm extends React.Component {
     state = { command: "" }
@@ -51,7 +51,7 @@ class UpdateActionForm extends React.Component {
         var command = action.command ? action.command : {}
         var commands = this.props.editor.tools ? this.props.editor.tools.commands : []
         return(
-            <div>
+            <div style={styles.container}>
                 <select value={command.slug} style={styles.select} onChange={this.handleCommandChange} name="slug">
                     { commands.map((command, i ) =>
                         <option key={i} value={command.slug} >{command.name}</option>
@@ -64,7 +64,7 @@ class UpdateActionForm extends React.Component {
                     )
                 : <option></option> }
                 </select>
-                <Button onClick={this.handleDelete}>Delete</Button>
+                <Button onClick={this.handleDelete}><Icon name="delete" /></Button>
             </div>
 
         )
@@ -72,6 +72,9 @@ class UpdateActionForm extends React.Component {
 }
 
 const styles = {
+    container: {
+
+    },
     select: {
         width: "100%",
         maxWidth: "200px",

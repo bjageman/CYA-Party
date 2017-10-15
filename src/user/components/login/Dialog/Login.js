@@ -21,6 +21,12 @@ class LoginDialog extends React.Component {
         this.props.onRequestClose()
     }
 
+    handleGuestRegistration = () => {
+        this.props.register({
+            "guest": true,
+        })
+    }
+
     render(){
         return(
             <Dialog open={this.props.open} onRequestClose={this.handleRequestClose}>
@@ -46,6 +52,9 @@ class LoginDialog extends React.Component {
                 </Button>
                 <Button onClick={this.props.openRegistration} color="primary">
                     Sign Up
+                </Button>
+                <Button onClick={this.handleGuestRegistration}>
+                    Guest
                 </Button>
             </Dialog>
         )

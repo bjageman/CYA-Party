@@ -16,7 +16,7 @@ class Lobby extends React.Component {
         const session = this.props.session
         const is_host = this.props.user.id === this.props.session.host.id
         return (
-            <Container>
+            <Container center>
                 { session ?
                     <div>
                         <Text h1>{session.story.name}</Text>

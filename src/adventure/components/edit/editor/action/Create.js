@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Button } from 'bjageman-react-toolkit'
+import { Button, Icon } from 'bjageman-react-toolkit'
 
 class NewActionForm extends React.Component {
     addAction(){
@@ -22,7 +22,7 @@ class NewActionForm extends React.Component {
     render() {
         return(
             <div>
-                <Button onClick={() => this.addAction()}>Add New Action</Button>
+                <Button onClick={() => this.addAction()}><Icon name="addcircle" /> Action</Button>
             </div>
 
         )

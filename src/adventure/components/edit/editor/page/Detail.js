@@ -10,7 +10,7 @@ import UpdatePage from './Update'
 class PageDetailEditor extends React.Component {
 
     render() {
-        const page_index = parseInt(this.props.match.params.page_index)
+        const page_index = parseInt(this.props.match.params.page_index, 10)
         const editor = this.props.editor
         const page = editor.story.pages[page_index]
         return(

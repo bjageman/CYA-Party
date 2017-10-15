@@ -23,6 +23,9 @@ export const getPageSuccess = createAction('Successfully received page data')
 export const getSessions = createAction('Request a list of available games')
 export const getSessionsSuccess = createAction('Successfully received list of available games')
 
+export const quitGame = createAction('Send a quit game request')
+export const quitGameSuccess = createAction('Quit request successfully received')
+
 //Editor Options
 export const getTools = createAction('Request a set of available tools for the editor')
 export const getToolsSuccess = createAction('Successfully received tools data')

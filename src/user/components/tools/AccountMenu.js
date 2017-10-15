@@ -23,7 +23,7 @@ class AccountMenu extends React.Component {
 
     render() {
         return(
-            <Menu title={<Icon name="person" />}>
+            <Menu title={<div style={styles.menu}><Icon name="person" />{this.props.user.name}</div> }>
                 <ReduxLink to="/profile">
                     <MenuItem onClick={this.handleRequestClose}>Profile</MenuItem>
                 </ReduxLink>
@@ -31,6 +31,12 @@ class AccountMenu extends React.Component {
                 <MenuItem onClick={this.handleLogOut}>Log Out</MenuItem>
             </Menu>
         )
+    }
+}
+
+const styles ={
+    menu: {
+        textTransform: "capitalize",
     }
 }
 

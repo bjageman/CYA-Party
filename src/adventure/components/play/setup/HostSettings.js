@@ -5,7 +5,7 @@ import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
 import { Container, Checkbox } from 'bjageman-react-toolkit'
 
-import { Button } from 'bjageman-react-toolkit'
+import { Button, Text } from 'bjageman-react-toolkit'
 
 class HostSettings extends React.Component {
     state = {
@@ -32,7 +32,7 @@ class HostSettings extends React.Component {
     render() {
         return (
             <Container center>
-                <h1>Settings</h1>
+                <Text h1>Settings</Text>
                 <Checkbox name="private" onClick={this.handleInputChange} value={this.state.private} label="Private Game" />
                 <Button raised onClick={this.handleCreateGame}>Create Game</Button>
             </Container>

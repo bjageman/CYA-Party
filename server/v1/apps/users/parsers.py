@@ -14,6 +14,7 @@ def parse_user(user):
             "last_name": user.last_name,
             "email": user.email,
             "admin": user.admin,
+            "guest": user.guest,
         })
         return result
     except AttributeError:

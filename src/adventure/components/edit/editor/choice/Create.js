@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Button } from 'bjageman-react-toolkit'
+import { Button, Icon } from 'bjageman-react-toolkit'
 
 class NewChoiceForm extends React.Component {
     addChoice(){
@@ -21,7 +21,7 @@ class NewChoiceForm extends React.Component {
         }
     }
 
-    render() { return <Button onClick={() => this.addChoice()}>Add New Choice</Button> }
+    render() { return <Button onClick={() => this.addChoice()}><Icon name="addbox" />Choice</Button> }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewChoiceForm)

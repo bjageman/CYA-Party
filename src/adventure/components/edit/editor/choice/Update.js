@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { TextInput, Button } from 'bjageman-react-toolkit'
+import { TextInput, Button, Icon } from 'bjageman-react-toolkit'
 
 import ActionCreate from '../action/Create'
 import ActionUpdate from '../action/Update'
@@ -33,16 +33,28 @@ class UpdateChoiceForm extends React.Component {
         let choice = page.choices[this.props.index]
         choice.index = this.props.index
         return(
-            <div>
+            <div style={styles.container}>
+                <Button onClick={this.handleDelete}><Icon name="delete" /></Button>
                 <TextInput style={{width: "100%"}} onChange={this.handleInputChange} name="name" placeholder="Choice Name" value={choice.name} />
-                <Button onClick={this.handleDelete}>Delete Choice</Button>
                 <ActionCreate page={page} choice={choice} />
+                <hr />
                 { choice.actions.map((action, i) =>
                     <ActionUpdate key={i} page={page} choice={choice} index={i} />
                 )}
             </div>
 
         )
+    }
+}
+
+const styles = {
+    container: {
+        border: "1px solid black",
+        borderRadius: 10,
+        padding: 10,
+        marginLeft: "2%",
+        marginRight: "2%",
+        marginBottom: 10,
     }
 }
 

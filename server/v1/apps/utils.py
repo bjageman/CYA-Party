@@ -1,5 +1,5 @@
 
-import os, json, sys
+import os, json, sys, random, string
 
 from flask import make_response, jsonify, abort
 from datetime import datetime
@@ -41,6 +41,9 @@ def convert_string_to_datetime(date_string):
         return datetime.strptime(date_string, DATETIMEFORMAT)
     else:
         return None
+
+def generate_random_string(size=10):
+    return ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(size))
 
 #Search Functions
 

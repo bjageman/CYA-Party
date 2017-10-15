@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Grid, GridItem, Text } from 'bjageman-react-toolkit'
+import { Container, Text } from 'bjageman-react-toolkit'
 import ReduxLink from 'base/components/links/Redux'
 
 class StoryListItem extends React.Component {
@@ -11,21 +11,13 @@ class StoryListItem extends React.Component {
         const story = this.props.story
         return(
             <ReduxLink to={"/story/play/host/" + story.slug }>
-            <div style={styles.container}>
+            <div style={styles.item}>
                 <Text h1> {story.name} </Text>
+                {story.owner ? <Text p style={styles.owner}> Created By: {story.owner.name} </Text> : null }
                 <Text p> {story.description} </Text>
             </div>
             </ReduxLink>
         )
-    }
-}
-
-const styles = {
-    container: {
-        border: "1px solid black",
-        borderRadius: "10px",
-        paddingLeft: "10px",
-        paddingRight: "10px",
     }
 }
 
@@ -41,15 +33,28 @@ class StoryList extends React.Component {
         const story_listing = this.props.editor.listing
         if (story_listing) {
             return(
-                <Grid>
+                <Container>
                 {story_listing.map((story, i) =>
-                    <GridItem key={i}><StoryListItem story={story} /></GridItem>
+                    <StoryListItem key={i} story={story} />
                 )}
-                </Grid>
+                </Container>
             )
         }else{
             return null
         }
+    }
+}
+
+const styles = {
+    item: {
+        border: "1px solid black",
+        borderRadius: "10px",
+        paddingLeft: "10px",
+        paddingRight: "10px",
+        marginBottom: "10px",
+    },
+    owner:{
+        textTransform: "capitalize",
     }
 }
 

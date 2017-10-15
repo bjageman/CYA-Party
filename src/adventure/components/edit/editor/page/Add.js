@@ -3,7 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Button } from 'bjageman-react-toolkit'
+import { Button, Icon } from 'bjageman-react-toolkit'
 
 class AddPage extends React.Component {
     addPage(){

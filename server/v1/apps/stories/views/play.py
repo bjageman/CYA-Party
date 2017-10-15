@@ -158,4 +158,16 @@ def execute_action(action, room=None):
                 "page": parse_page(page, detailed=True)
             }, room=room)
             return True
+    if command.slug == 'quit-game':
+        emit('quit_game', { }, room=room)
+        return True
+    if command.slug == 'add-item':
+        item = action.item
+        if action.item is not None:
+            emit('add-item', { parse_item(item) }, room=room)
+            return True
+    if command.slug == 'remove-item':
+        if action.page is not None:
+            emit('remove-item', { parse_item(item) }, room=room)
+            return True
     return False

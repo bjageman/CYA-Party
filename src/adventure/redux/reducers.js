@@ -45,9 +45,11 @@ export const session = createReducer({
         }
     },
     [actions.getSessionsSuccess]: (state, payload) => {
-        console.log(payload)
         return { ...state, listing: payload.listing }
-    }
+    },
+    [actions.quitGameSuccess]: (state, payload) => {
+        return initial.session
+    },
 }, initial.session)
 
 export const editor = createReducer({

@@ -3,8 +3,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
-import { Container, List } from 'bjageman-react-toolkit'
+import { Container, List, Button } from 'bjageman-react-toolkit'
 
+import ReduxLink from 'base/components/links/Redux'
 import JoinItem from './Item'
 
 class Join extends React.Component {
@@ -16,6 +17,7 @@ class Join extends React.Component {
         const listing = this.props.session.listing
         return (
             <Container>
+                <ReduxLink to=".."><Button>BACK</Button></ReduxLink>
                 { listing ?
                     <div>
                         <List>

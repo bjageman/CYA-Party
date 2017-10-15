@@ -9,12 +9,18 @@ export const user = createReducer({
   [actions.logout]: (state) => {
     return {}
   },
+  [actions.authSuccess]: (state, payload) => {
+      return {
+          ...state,
+          "access_token": payload.access_token
+      }
+  },
   [actions.loginSuccess]: (state, payload) => {
     return {
-        "access_token" : payload.access_token,
         ...state,
-        "name": payload.name,
-        "id": payload.id,
+        "name": payload.data.name,
+        "id": payload.data.id,
+        "guest": payload.data.guest,
          }
   }
 }, initial.user)

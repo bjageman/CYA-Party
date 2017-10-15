@@ -104,6 +104,10 @@ function watchMessages(socket) {
     socket.on('go_to_page', ({ page }) => {
         emit(actions.getPageSuccess({ page: page }))
     })
+    socket.on('quit_game', () => {
+        emit(actions.quitGameSuccess())
+        emit(push("/story"))
+    })
     socket.on('session_deactivated', ( ) => {
         emit(push("/story/play/join"))
         alert("This game was deactivated")

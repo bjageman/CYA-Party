@@ -81,7 +81,7 @@ def importStoriesData(data, db=db):
     print("Imported", len(data), "stories")
 
 def exportData(object, slug=None, db=db):
-    if slug is None:
+    if slug is None or slug is "all":
         result = parse_stories(db.session.query(object).all(), detailed=True)
     else:
         result = parse_story(db.session.query(object).filter_by(slug=slug).first(), detailed=True)
@@ -96,12 +96,14 @@ def importUserData(data, db=db):
     print("Imported", len(data), "users")
 
 def importCommands(data, db=db):
+    count = 0
     for command in data:
         if Command.query.filter_by(name=command['name']).first() is None:
             command_model = Command(name=command['name'], target=command['target'])
             db.session.add(command_model)
+            count = count + 1
     db.session.commit()
-    print("Imported", len(data), "commands")
+    print("Imported", count, "commands")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-t", "--type", help="The type of data to be imported or exported [users, stories, pages]")

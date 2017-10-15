@@ -14,5 +14,9 @@
     {
         "name": "GOTO PAGE",
         "target": "PAGE"
+    },
+    {
+        "name": "QUIT GAME",
+        "target": null
     }
 ]

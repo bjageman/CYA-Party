@@ -1,111 +1,305 @@
 [{
-	"name": "Curse of Esmeralda",
-	"description": "A bunch of people try to find a sweet gem.",
-	"owner": { "name": "brodin" },
-	"ratings": [4, 5, 5, 5, 2],
-	"image": {
-        "url": "http://reallybigcompany.com/papers/gemstones_idaho/gems/zircon_large_3.jpg"
-    },
-	"pages": [{
-		"id": 1,
-        "start": true,
-		"name": "Room 1: The Introduction",
-		"description": "You are in a room. A door is to the left and the right.",
-		"choices": [{
-				"id": 1,
-				"name": "Go Right",
-				"required_item": null,
-				"actions": [{
-						"name": "You find a sweet wrench",
-						"type": "GIVE_ITEM",
-						"target": 1
-					},
-					{
-						"name": "You enter the second room",
-						"type": "GOTO_PAGE",
-						"target": 2
-					}
-				]
-			},
-			{
-				"id": 2,
-				"name": "Go Left",
-				"required_item": null,
-				"actions": [{
-						"name": "A MONSTER EATS ONE OF YOU",
-						"type": "KILL_PLAYER",
-						"target": "RANDOM"
-					},
-					{
-						"name": "You enter the second room",
-						"type": "GOTO_PAGE",
-						"target": 2
-					}
-				]
-			}]
-	    },
-        {
-		"id": 2,
-        "start": false,
-		"name": "Room 2: The Next Day",
-		"description": "This is a second room. Woot!",
-		"choices": [{
-				"name": "Go Up",
-				"required_item": null,
-				"actions": [{
-						"name": "You find a sweet item",
-						"type": "GIVE_ITEM",
-						"target": 2
-					},
-					{
-						"name": "You enter the next room",
-						"type": "GOTO_PAGE",
-						"target": 3
-					}
-				]
-			},
-			{
-				"name": "Go Down",
-				"required_item": null,
-				"actions": [{
-						"name": "One of you must be sacrificed to the demon lord",
-						"type": "KILL_PLAYER",
-						"target": "CHOOSE"
-					},
-					{
-						"name": "You enter the next room",
-						"type": "GOTO_PAGE",
-						"target": 3
-					}
-				]
-			},
-			{
-				"id": 3,
-				"name": "Use the wrench",
-				"required_item": 1,
-				"actions": [{
-					"name": "You enter the secret trapdoor",
-					"type": "GOTO_PAGE",
-					"target": 3
-				}]
-			}]
-	    },
-        {
-        "id": 3,
-        "start": false,
-        "name": "Room 3: The Final Rooms",
-        "description": "This is the final room! You survived!",
-        "choices": []
-        }],
-    "items": [
-        {
+    "created": "Oct 06 2017 09:14PM",
+    "description": "The Home Game* version of www.kingdomofloathing.com *Or, more likely, The While You\u2019re Standing In  Some Line At Comic-Con Game. We  basically had  that  discussion before, though. And Now, Something Else Entirely",
+    "id": 4,
+    "image": null,
+    "items": [],
+    "name": "Kingdom of Loathing ",
+    "owner": {
+        "admin": false,
+        "created": "Oct 05 2017 09:01PM",
+        "email": null,
+        "first_name": null,
         "id": 1,
-        "name":"Wrench"
+        "last_name": null,
+        "name": "neuro",
+        "slug": "neuro",
+        "updated": "Oct 05 2017 09:01PM"
+    },
+    "pages": [
+        {
+            "choices": [
+                {
+                    "actions": [
+                        {
+                            "command": {
+                                "id": 4,
+                                "name": "GOTO PAGE",
+                                "slug": "goto-page",
+                                "target": "PAGE"
+                            },
+                            "created": "Oct 06 2017 09:14PM",
+                            "id": 2,
+                            "item": null,
+                            "name": "",
+                            "page": {
+                                "created": "Oct 06 2017 09:14PM",
+                                "id": 4,
+                                "name": "The Barman",
+                                "slug": "the-barman",
+                                "updated": "Oct 06 2017 09:14PM"
+                            },
+                            "slug": "",
+                            "target": "4",
+                            "updated": "Oct 06 2017 09:14PM"
+                        }
+                    ],
+                    "created": "Oct 06 2017 09:14PM",
+                    "id": 2,
+                    "name": "Order a drink from the barman",
+                    "required_item": null,
+                    "slug": "order-a-drink-from-the-barman",
+                    "updated": "Oct 06 2017 09:14PM"
+                },
+                {
+                    "actions": [
+                        {
+                            "command": {
+                                "id": 4,
+                                "name": "GOTO PAGE",
+                                "slug": "goto-page",
+                                "target": "PAGE"
+                            },
+                            "created": "Oct 06 2017 09:14PM",
+                            "id": 3,
+                            "item": null,
+                            "name": "",
+                            "page": {
+                                "created": "Oct 06 2017 09:14PM",
+                                "id": 5,
+                                "name": "Shadowy Figure",
+                                "slug": "shadowy-figure",
+                                "updated": "Oct 06 2017 09:14PM"
+                            },
+                            "slug": "-2",
+                            "target": "5",
+                            "updated": "Oct 06 2017 09:14PM"
+                        }
+                    ],
+                    "created": "Oct 06 2017 09:14PM",
+                    "id": 3,
+                    "name": "Approach the shadowy figure",
+                    "required_item": null,
+                    "slug": "approach-the-shadowy-figure",
+                    "updated": "Oct 06 2017 09:14PM"
+                }
+            ],
+            "created": "Oct 06 2017 09:14PM",
+            "description": "You scratch idly at where your new leather armor chafes, then, with your hand on the hilt of your father\u2019s worn old longsword, you push open the door to the village tavern. The inside is dimly lit, and (being midafternoon) mostly empty\u2014the local farmers are still doing their chores, you guess. Apart from the bartender, only one person is in here\u2014a man in a dark, hooded robe, sitting in a shadowy corner of the \nroom.",
+            "id": 3,
+            "name": "Introduction",
+            "slug": "introduction",
+            "start": false,
+            "updated": "Oct 06 2017 09:14PM"
         },
         {
-        "id": 2,
-        "name":"Candy"
+            "choices": [
+                {
+                    "actions": [
+                        {
+                            "command": {
+                                "id": 4,
+                                "name": "GOTO PAGE",
+                                "slug": "goto-page",
+                                "target": "PAGE"
+                            },
+                            "created": "Oct 06 2017 09:14PM",
+                            "id": 4,
+                            "item": null,
+                            "name": "",
+                            "page": {
+                                "created": "Oct 06 2017 09:14PM",
+                                "id": 5,
+                                "name": "Shadowy Figure",
+                                "slug": "shadowy-figure",
+                                "updated": "Oct 06 2017 09:14PM"
+                            },
+                            "slug": "-3",
+                            "target": "5",
+                            "updated": "Oct 06 2017 09:14PM"
+                        }
+                    ],
+                    "created": "Oct 06 2017 09:14PM",
+                    "id": 4,
+                    "name": "Talk to the shadowy figure in the corner",
+                    "required_item": null,
+                    "slug": "talk-to-the-shadowy-figure-in-the-corner",
+                    "updated": "Oct 06 2017 09:14PM"
+                },
+                {
+                    "actions": [
+                        {
+                            "command": {
+                                "id": 4,
+                                "name": "GOTO PAGE",
+                                "slug": "goto-page",
+                                "target": "PAGE"
+                            },
+                            "created": "Oct 06 2017 09:14PM",
+                            "id": 5,
+                            "item": null,
+                            "name": "",
+                            "page": {
+                                "created": "Oct 06 2017 09:14PM",
+                                "id": 6,
+                                "name": "You Leave!",
+                                "slug": "you-leave",
+                                "updated": "Oct 06 2017 09:14PM"
+                            },
+                            "slug": "-4",
+                            "target": "6",
+                            "updated": "Oct 06 2017 09:14PM"
+                        }
+                    ],
+                    "created": "Oct 06 2017 09:14PM",
+                    "id": 5,
+                    "name": "Leave the bar",
+                    "required_item": null,
+                    "slug": "leave-the-bar",
+                    "updated": "Oct 06 2017 09:14PM"
+                }
+            ],
+            "created": "Oct 06 2017 09:14PM",
+            "description": "You step up to the bar and order a mug of ale. The bartender looks at \nyou appraisingly.\n\u201cWhat level are you?\u201d\n\u201cWhat? Uh... first, I guess.\u201d\n\u201cSorry kid, we don\u2019t serve booze to minors. Come back when you\u2019ve got some \norcs under your belt.\u201d He pauses, then looks up from the mug he\u2019s polishing.       \n\u201c...That sounded a bit dirtier than I intended, actually.\u201d",
+            "id": 4,
+            "name": "The Barman",
+            "slug": "the-barman",
+            "start": false,
+            "updated": "Oct 06 2017 09:14PM"
+        },
+        {
+            "choices": [
+                {
+                    "actions": [
+                        {
+                            "command": {
+                                "id": 4,
+                                "name": "GOTO PAGE",
+                                "slug": "goto-page",
+                                "target": "PAGE"
+                            },
+                            "created": "Oct 06 2017 09:14PM",
+                            "id": 6,
+                            "item": null,
+                            "name": "",
+                            "page": {
+                                "created": "Oct 06 2017 09:14PM",
+                                "id": 7,
+                                "name": "A Quest!",
+                                "slug": "a-quest",
+                                "updated": "Oct 06 2017 09:14PM"
+                            },
+                            "slug": "-5",
+                            "target": "7",
+                            "updated": "Oct 06 2017 09:14PM"
+                        }
+                    ],
+                    "created": "Oct 06 2017 09:14PM",
+                    "id": 6,
+                    "name": "request a... quest",
+                    "required_item": null,
+                    "slug": "request-a-quest",
+                    "updated": "Oct 06 2017 09:14PM"
+                },
+                {
+                    "actions": [
+                        {
+                            "command": {
+                                "id": 4,
+                                "name": "GOTO PAGE",
+                                "slug": "goto-page",
+                                "target": "PAGE"
+                            },
+                            "created": "Oct 06 2017 09:14PM",
+                            "id": 7,
+                            "item": null,
+                            "name": "",
+                            "page": {
+                                "created": "Oct 06 2017 09:14PM",
+                                "id": 6,
+                                "name": "You Leave!",
+                                "slug": "you-leave",
+                                "updated": "Oct 06 2017 09:14PM"
+                            },
+                            "slug": "-6",
+                            "target": "6",
+                            "updated": "Oct 06 2017 09:14PM"
+                        }
+                    ],
+                    "created": "Oct 06 2017 09:14PM",
+                    "id": 7,
+                    "name": "Leave the bar",
+                    "required_item": null,
+                    "slug": "leave-the-bar-2",
+                    "updated": "Oct 06 2017 09:14PM"
+                }
+            ],
+            "created": "Oct 06 2017 09:14PM",
+            "description": "The hooded man looks up at you as you approach. \u201cAh, finally, an ad-\nventurer! I was beginning to think the guild sent me to this backwater \nas punishment.\u201d\n\u201cGuild?\u201d\n\u201cThe Shadowy Figures in the Corners of \nBars Union.\u201d He shows you his membership \ncard. \u201cWe\u2019ve been providing quests to young \nadventurers such as yourself since time out of \nmind.\u201d",
+            "id": 5,
+            "name": "Shadowy Figure",
+            "slug": "shadowy-figure",
+            "start": false,
+            "updated": "Oct 06 2017 09:14PM"
+        },
+        {
+            "choices": [
+                {
+                    "actions": [],
+                    "created": "Oct 06 2017 09:14PM",
+                    "id": 8,
+                    "name": "GAME OVER",
+                    "required_item": null,
+                    "slug": "game-over",
+                    "updated": "Oct 06 2017 09:14PM"
+                }
+            ],
+            "created": "Oct 06 2017 09:14PM",
+            "description": "Deciding you\u2019re not going to find what you\u2019re looking for here, \nyou strike off on your own, and eventually find yourself em-\nbroiled in the adventure of a lifetime!\nIt isn\u2019t the one we actually wrote, though.  But hey, you\u2019ve clearly got things to \ndo, people to see.  Why not add to your workload by doing some things and seeing \nsome people in the Kindom of Loathing, our web-based multiplayer role-playing \ngame available online at \nhttp://www.kingdomofloathing.com/",
+            "id": 6,
+            "name": "You Leave!",
+            "slug": "you-leave",
+            "start": false,
+            "updated": "Oct 06 2017 09:14PM"
+        },
+        {
+            "choices": [
+                {
+                    "actions": [
+                        {
+                            "command": {
+                                "id": 3,
+                                "name": "KILL PLAYER",
+                                "slug": "kill-player",
+                                "target": "PLAYER"
+                            },
+                            "created": "Oct 06 2017 09:26PM",
+                            "id": 8,
+                            "item": null,
+                            "name": "",
+                            "page": null,
+                            "slug": "-7",
+                            "target": null,
+                            "updated": "Oct 06 2017 09:26PM"
+                        }
+                    ],
+                    "created": "Oct 06 2017 09:14PM",
+                    "id": 9,
+                    "name": "TO BE CONTINUED...",
+                    "required_item": null,
+                    "slug": "to-be-continued",
+                    "updated": "Oct 06 2017 09:14PM"
+                }
+            ],
+            "created": "Oct 06 2017 09:14PM",
+            "description": "The man pulls out a small box of filing cards. \u201cLet\u2019s see now... \nyou\u2019re first level?\u201d\n\u201cYup.\u201d\n\u201cThat\u2019s what I thought. Standard-issue leather armor and an old sword, prob-\nably inherited from a relative. What have I got for a first level fighter?...\u201d He flips \nthrough the cards for a moment, and pulls one out. \u201cHere we go, a little dungeon-\ncrawl. Classic jumping-off point for a budding young adventurer. Interested?\u201d",
+            "id": 7,
+            "name": "A Quest!",
+            "slug": "a-quest",
+            "start": false,
+            "updated": "Oct 06 2017 09:14PM"
         }
-    ]
-
+    ],
+    "slug": "kingdom-of-loathing",
+    "updated": "Oct 06 2017 09:14PM"
 }]

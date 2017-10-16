@@ -5,6 +5,7 @@ import { mapStateToProps, mapDispatchToProps } from 'redux/utils'
 
 import { Drawer, Button, MenuItem, Text } from 'bjageman-react-toolkit'
 import ReduxLink from 'base/components/links/Redux'
+import AddPage from './page/Add'
 
 class TableofContentsDrawer extends React.Component {
     state = { open: false }
@@ -23,6 +24,7 @@ class TableofContentsDrawer extends React.Component {
                     <Text h2>Pages</Text>
                 </div>
                 <hr />
+                <AddPage redirect />
                 {story.pages.map((page, i) =>
                     <ReduxLink key={i} to={"/story/edit/" + story.slug + "/pages/" + i}><MenuItem>{page.name}</MenuItem></ReduxLink>
                 )}

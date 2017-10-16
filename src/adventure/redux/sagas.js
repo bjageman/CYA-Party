@@ -123,7 +123,15 @@ export function* getSessions(action) {
       }
 }
 
-export default function* editSagas(){
+export function* redirect(action){
+    let payload = action.payload
+    console.log("REDIRECT", payload)
+    if (payload.redirect){
+        yield put(push(payload.redirect))
+    }
+}
+
+export default function* adventureSagas(){
     yield fork(wsHandling)
     //Getters
     yield takeEvery(actions.getStory, getStory)
@@ -134,4 +142,6 @@ export default function* editSagas(){
     yield takeEvery(actions.getTools, getTools)
     //Play
     yield takeEvery(actions.getSessions, getSessions)
+    //Offline Side effects
+    yield takeEvery(actions.addPage, redirect)
 }

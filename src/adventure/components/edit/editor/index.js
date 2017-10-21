@@ -32,7 +32,7 @@ class EditorRouter extends React.Component {
         this.props.saveStory({
             access_token: this.props.user.access_token,
             story: this.props.editor.story,
-            redirect: true,
+            redirect: false,
             notification: true,
         })
     }

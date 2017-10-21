@@ -123,12 +123,18 @@ def create_action(name, command=None, target=None):
     if command is not None:
         slug = get_required_data(command, "slug")
         command = get_command(slug)
-        if command.target == "PAGE":
-            page = get_page(target)
-            target = page.id
-        if command.target == "ITEM":
-            item = get_item(target)
-            target = item.id
+        try:
+            if command.target == "PAGE":
+                page = get_page(target)
+                target = page.id
+            if command.target == "ITEM":
+                item = get_item(target)
+                target = item.id
+        except AttributeError:
+            print("Invalid Action Target")
+            item = None
+            page = None
+            target = None
     action = Action(name=name, command=command, target=target, page=page, item=item)
     return action
 

@@ -1,6 +1,6 @@
 import { createReducer } from 'redux-act'
 import * as actions from './actions'
-import { updateObjectInArray, removeItem } from 'redux/utils'
+import { updateObjectInArray, removeItem, reorderObjectsInArray } from 'redux/utils'
 
 const initial = {
   editor: {
@@ -84,6 +84,15 @@ export const editor = createReducer({
                 pages: [...state.story.pages, payload.page]
             },
             page: initial.editor.page
+        }
+    },
+    [actions.reorderPages]: (state, payload) => {
+        return {
+            ...state,
+            story: {
+                ...state.story,
+                pages: reorderObjectsInArray(state.story.pages, payload.firstIndex, payload.secondIndex)
+            }
         }
     },
     [actions.deletePage]: (state, payload) => {

@@ -37,6 +37,16 @@ export function updateObjectInArray(array, insertItem, insertIndex) {
     });
 }
 
+export function reorderObjectsInArray(array, firstIndex, secondIndex) {
+    let firstItem = array[firstIndex]
+    let secondItem = array[secondIndex]
+    let newArray = removeItem(array, firstIndex)
+    newArray = insertItem(newArray, secondItem, firstIndex)
+    newArray = removeItem(newArray, secondIndex)
+    newArray = insertItem(newArray, firstItem, secondIndex)
+    return newArray
+}
+
 export function insertItem(array, item, index) {
     let newArray = array.slice();
     newArray.splice(index, 0, item);

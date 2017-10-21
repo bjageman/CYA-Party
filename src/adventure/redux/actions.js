@@ -37,6 +37,7 @@ export const updateStory = createAction('Update an existing story')
 export const updatePage = createAction('Update a current page')
 export const addPage = createAction('Add a new page')
 export const deletePage = createAction('Delete an existing page')
+export const reorderPages = createAction('Reorders the pages listed')
 //Choice
 export const updateChoice = createAction('Update a current choice')
 export const addChoice = createAction('Add a new choice')

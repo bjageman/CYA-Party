@@ -62,7 +62,6 @@ class StoryForm extends React.Component {
         )
     }
 }
-
 const styles = {
     name: {
         width: "100%"

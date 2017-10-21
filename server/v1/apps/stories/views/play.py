@@ -147,10 +147,11 @@ def vote_choice(data):
         if len(result) == 1:
             winner = result[0]
             for action in winner.actions:
-                execute_action(action, session.id)
+                execute_action(action, session)
 
-def execute_action(action, room=None):
+def execute_action(action, session):
     command = action.command
+    room = session.id
     if command.slug == 'goto-page':
         page = action.page
         if action.page is not None:
@@ -159,6 +160,10 @@ def execute_action(action, room=None):
             }, room=room)
             return True
     if command.slug == 'quit-game':
+        session.closed = True
+        session.active = False
+        db.session.add(session)
+        db.session.commit()
         emit('quit_game', { }, room=room)
         return True
     if command.slug == 'add-item':

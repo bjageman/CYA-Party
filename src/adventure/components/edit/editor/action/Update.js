@@ -28,7 +28,6 @@ class UpdateActionForm extends React.Component {
     }
 
     handleCommandChange = (event) => {
-        console.log(event.target.name, event.target.value)
         this.props.updateAction({
             index: this.props.index,
             page_index: this.props.page.index,
@@ -57,8 +56,12 @@ class UpdateActionForm extends React.Component {
                         <option key={i} value={command.slug} >{command.name}</option>
                     )}
                 </select>
-                <select value={action.target} style={styles.select} onChange={this.handleInputChange} name="target">
-                    <option disabled selected value> -- select an option -- </option>
+                <select
+                    value={action.target || 0}
+                    style={styles.select}
+                    onChange={this.handleInputChange}
+                    name="target">
+                    <option disabled value> -- select an option -- </option>
                 { command.slug === "goto-page" ?
                     this.props.editor.story.pages.map((page, i) =>
                         <option key={i} value={page.id}>{page.name}</option>

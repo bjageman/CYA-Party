@@ -36,6 +36,11 @@ app.register_blueprint(users, url_prefix= base_url + 'users')
 app.register_blueprint(editor, url_prefix= base_url + 'editor')
 app.register_blueprint(player, url_prefix= base_url + 'play')
 
+@app.route('/')
+def index():
+    return 'CYA Party server is up!'
+
+
 @app.after_request
 def add_headers(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
